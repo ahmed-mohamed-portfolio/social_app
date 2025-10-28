@@ -30,7 +30,6 @@ export class TimelineComponent implements OnInit{
 
   ngOnInit(): void {
 
-    
     this.postService.GetAllPostsInfo().subscribe({
       next:(res)=>{
         this.pageNumber.set(res.paginationInfo.numberOfPages)
@@ -38,7 +37,6 @@ export class TimelineComponent implements OnInit{
       },
       error:(err)=>{
         console.log(err);
-        
       }
     })
     

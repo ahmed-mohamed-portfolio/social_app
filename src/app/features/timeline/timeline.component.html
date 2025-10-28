@@ -1,1 +1,27 @@
-<p>timeline works!</p>
+<app-create-post></app-create-post>
+
+
+<div infiniteScroll 
+[infiniteScrollDistance]="0.1"
+[infiniteScrollThrottle]="300" 
+(scrolled)="onScrollDown()"
+ >
+
+
+ 
+@for (post of allPosts(); track $index) {
+@defer (on viewport) {
+
+<app-s-post [post]="post"></app-s-post>
+
+}@placeholder {<p-skeleton width="10rem" height="4rem" />}
+@loading {<div> Loading... </div>}
+@error {<div>Failed to load product details.</div>} 
+
+}
+
+</div>
+
+
+
+

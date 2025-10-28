@@ -1,1 +1,22 @@
-<p>s-comment works!</p>
+<section class="w-full bg-[#eee] p-4 mb-1  rounded-md  ">
+
+<div class="flex justify-between items-center">
+    <div class="flex items-center">
+         <img [src]="comment().commentCreator.photo.includes('undefined') ? '/images/profile.png' :comment().commentCreator.photo " class="size-9 rounded-full" [alt]="comment().commentCreator.name">
+            <p class="text-[15px] px-3" >{{comment().commentCreator.name}}</p>
+            <span class="text-[10px]">{{comment().createdAt | date}}</span>
+         
+    </div>
+        <div class="relative" >
+       <div class="card flex justify-center">
+          <p-menu #menuC [model]="itemsC" [popup]="true" />
+          <p-button (click)="menuC.toggle($event)" icon="pi pi-ellipsis-h"/>
+       </div>
+    </div>
+
+</div>
+
+<p class="my-2 text-[0.85rem]">{{comment().content}}</p>
+
+</section>
+

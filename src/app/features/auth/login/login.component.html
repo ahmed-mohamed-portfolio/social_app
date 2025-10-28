@@ -1,1 +1,54 @@
-<p>login works!</p>
+<section class="flex justify-center dark:bg-gray-500 sm:my-5 md:py-10 items-center">
+
+  <form 
+    class="w-[85%] max-w-80 py-5 p-2 md:w-[60%] lg:w-[80%] lg:max-w-96 xl:max-w-sm"
+    [formGroup]="loginForm"
+    (ngSubmit)="loginSubmit()"
+  >
+
+    <!-- email input -->
+    <app-input
+      [control]="loginForm.get('email')"
+      [typeInput]="'email'"
+      [idInput]="'email'"
+      [placeHolder]="'ahmed.mohamed@gmail.com'"
+      [labelInput]="'Email address'"
+    ></app-input>
+
+    <!-- password input -->
+    <app-input
+      [control]="loginForm.get('password')"
+      [idInput]="'password'"
+      [placeHolder]="'•••••••••'"
+      [labelInput]="'Password'"
+    >
+      assword must be at least 8 characters, include uppercase, lowercase, number, and special
+      character.
+    </app-input>
+
+
+
+    <button
+      type="submit"
+      class=" w-full cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      Log in
+    </button>
+
+
+
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+<p>
+  Don’t have an account?
+  <a routerLink="/register" class="cursor-pointer underline text-blue-600">Sign up</a>
+</p>
+
+  </form>
+
+  <img
+    class="hidden sm:w-[50%] sm:block md:w-[40%] lg:w-[30%] xl:w-[25%]"
+    src="/login.png"
+    alt=""
+  />
+</section>

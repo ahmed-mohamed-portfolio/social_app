@@ -1,1 +1,71 @@
-<p>register works!</p>
+<section class="flex justify-center items-center dark:bg-gray-500 sm:my-5  md:py-10">
+
+
+    <form [formGroup]="registerForm" (ngSubmit)="regsterSubmit()"
+        class="w-[85%] max-w-80  py-5 p-2  md:w-[60%]  lg:w-[80%] lg:max-w-96 xl:max-w-lg ">
+
+        <!-- @if(errorMsg().length>0){
+        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">Error:</span> {{errorMsg()}}
+        </div>
+        } -->
+
+        <!-- name input -->
+        <app-input [control]="registerForm.get('name')" [typeInput]="'text'" [idInput]="'name'"
+            [placeHolder]="'ahmed mohamed'" [labelInput]="'Name'"></app-input>
+
+
+
+        <!-- email input -->
+        <app-input [control]="registerForm.get('email')" [typeInput]="'email'" [idInput]="'email'"
+            [placeHolder]="'ahmed.mohamed@gmail.com'" [labelInput]="'Email address'"></app-input>
+
+
+        <!-- password input -->
+        <app-input [control]="registerForm.get('password')" [idInput]="'password'" [placeHolder]="'•••••••••'"
+            [labelInput]="'Password'">
+
+            assword must be at least 8 characters, include uppercase,
+            lowercase, number, and special character.
+        </app-input>
+
+
+        <!-- repassword input -->
+        <app-input [control]="registerForm.get('rePassword')" [idInput]="'rePassword'" [placeHolder]="'•••••••••'"
+            [labelInput]="'confirm Password'">
+        </app-input>
+
+
+
+        <!-- date input -->
+        <app-input [control]="registerForm.get('dateOfBirth')" [typeInput]="'text'" [idInput]="'date'"
+            [placeHolder]="'7-10-1994'" [labelInput]="'Date of birth'">
+
+            Please enter a valid date (e.g., 7-10-1994).
+        </app-input>
+
+
+        <!-- gender input -->
+        <app-input [control]="registerForm.get('gender')" [typeInput]="'text'" [idInput]="'gender'"
+            [placeHolder]="'male or female'" [labelInput]="'Gender'">
+
+            Please enter a valid gender (e.g., male , female).
+        </app-input>
+        
+
+        <button type="submit"
+            class=" cursor-pointer  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
+            @if(isLoading()==true){ <i class="fa-solid fa-sync fa-spin"></i>}
+        </button>
+
+        <p class="mt-4" >Already have an account? <a routerLink="/login" class="cursor-pointer underline text-blue-600">Log In</a></p>
+
+    </form>
+
+
+
+
+    <img class=" hidden sm:w-[50%] sm:block  md:w-[40%]  lg:w-[30%] xl:w-[25%]  " src="/register.png" alt="">
+
+
+</section>

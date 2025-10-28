@@ -1,0 +1,29 @@
+::ng-deep .p-button {
+
+    color: black !important;
+     background: transparent !important; 
+     border: 0 !important;
+
+}
+
+
+::ng-deep .p-button:not(:disabled):hover {
+
+    color: black !important;
+     background: transparent !important; 
+     border: 0 !important;
+
+}
+
+
+::ng-deep .p-menu {
+min-width: 0 !important;
+left: -73px !important;
+top: 22px !important;
+
+}
+
+
+::ng-deep .p-menu-submenu-label {
+    display: none !important;
+}

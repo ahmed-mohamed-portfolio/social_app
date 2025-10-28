@@ -34,9 +34,10 @@
               }
             ],
             "styles": [
-                    "node_modules/@fortawesome/fontawesome-free/css/all.css",
-
-              "src/styles.scss"
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ]
           },
           "configurations": {

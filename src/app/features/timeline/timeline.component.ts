@@ -20,10 +20,10 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 export class TimelineComponent implements OnInit{
 
 
-  private readonly postService = inject(PostService)
-  allPosts: WritableSignal<Post[]> = signal([])
-  pageNumber: WritableSignal<number> = signal(0)
-  lastPageNumber: WritableSignal<number> = signal(0)
+  private readonly postService = inject(PostService);
+  allPosts: WritableSignal<Post[]> = signal([]);
+  pageNumber: WritableSignal<number> = signal(0);
+  lastPageNumber: WritableSignal<number> = signal(0);
   isLoading = signal(false);
   loader = signal(false);
 
@@ -46,9 +46,11 @@ export class TimelineComponent implements OnInit{
 
 
   getAllPosts() {
-this.loader.set(true)
+
+    this.loader.set(true) ;
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
       next: (req) => {
+
         console.log(req);
         this.allPosts.update(posts => [...posts, ...req.posts.reverse()]);
         this.isLoading.set(false);
@@ -67,8 +69,8 @@ this.loader.set(true)
 
     if (this.isLoading()) return;
     this.isLoading.set(true);
-    this.pageNumber.update(v => v - 1)
-    this.getAllPosts()
+    this.pageNumber.update(v => v - 1);
+    this.getAllPosts();
 
   }
   

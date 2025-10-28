@@ -10,6 +10,8 @@ import { initFlowbite } from 'flowbite';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentService } from '../s-comment/services/comment.service';
 import { Comment } from '../../../../app/core/interfaces/posts';
+
+
 @Component({
     selector: 'app-s-post',
     imports: [Menu, ButtonModule, DatePipe, SCommentComponent, ReactiveFormsModule],
@@ -84,13 +86,15 @@ export class SPostComponent implements OnInit {
                 next: (res) => {
                      this.commentsPost.set(res.comments)
                      this.commentControl.reset()
+                },
+                error:(err)=>{
+                     console.log(err);
+                     
                 }
             })
 
         }
     }
-
-
 
 
 

@@ -101,7 +101,10 @@ export class CreatePostComponent implements OnInit {
         this.visible.set(false)
         // this.newPost.emit(true);
 
-      }
+      },
+          error:(err)=>{
+          console.log(err);
+        }
     })
   }
 

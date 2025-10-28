@@ -20,6 +20,10 @@ GetAllPosts(pageNumber:number):Observable<allPosts>{
    return  this.http.get<allPosts>(environment.baseUrl+`posts?page=${pageNumber}`)
 }
 
+GetAllPostsInfo():Observable<allPosts>{
+   return  this.http.get<allPosts>(environment.baseUrl+`posts`)
+}
+
 GetUserPosts(id:string):Observable<any>{
    return  this.http.get(environment.baseUrl+`users/${id}/posts?limit=2`)
 }

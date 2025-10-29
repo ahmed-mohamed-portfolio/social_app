@@ -17,35 +17,39 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 })
 
 
-export class TimelineComponent implements OnInit{
+export class TimelineComponent implements OnInit {
 
 
   private readonly postService = inject(PostService);
   allPosts: WritableSignal<Post[]> = signal([]);
   pageNumber: WritableSignal<number> = signal(0);
-  lastPageNumber: WritableSignal<number> = signal(0);
   isLoading = signal(false);
   loader = signal(false);
 
 
   ngOnInit(): void {
 
+    this.getLenthAndFirstGetAllPosts()
+
+  }
+
+
+  getLenthAndFirstGetAllPosts() {
     this.postService.GetAllPostsInfo().subscribe({
-      next:(res)=>{
+      next: (res) => {
         this.pageNumber.set(res.paginationInfo.numberOfPages)
         this.getAllPosts();
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
-    
   }
 
 
   getAllPosts() {
 
-    this.loader.set(true) ;
+    this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
       next: (req) => {
 
@@ -55,9 +59,9 @@ export class TimelineComponent implements OnInit{
         this.loader.set(false)
 
       },
-          error:(err)=>{
-          console.log(err);
-        }
+      error: (err) => {
+        console.log(err);
+      }
     })
 
   }
@@ -65,11 +69,26 @@ export class TimelineComponent implements OnInit{
 
   onScrollDown() {
 
-    if (this.isLoading()) return;
+    if (this.isLoading() || this.pageNumber()<=1 ) return;
+
     this.isLoading.set(true);
     this.pageNumber.update(v => v - 1);
     this.getAllPosts();
 
   }
-  
+
+
+
+  submetPOst(e: boolean) {
+    console.log(e);
+    if (e) {
+      this.allPosts.set([]);
+
+      this.getLenthAndFirstGetAllPosts()
+
+      e = false;
+    }
+
+  }
+
 }

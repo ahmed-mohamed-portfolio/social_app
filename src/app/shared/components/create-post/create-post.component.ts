@@ -22,7 +22,6 @@ export class CreatePostComponent implements OnInit {
 
   private readonly postService = inject(PostService)
   
-  private readonly formData = new FormData()
 
   saveFile: WritableSignal<File | null> = signal(null)
 
@@ -36,7 +35,7 @@ export class CreatePostComponent implements OnInit {
 
   url: WritableSignal<string | null> = signal(null);
 
-  // newPost = output<boolean>();
+  newPost = output<boolean>();
 
 
   ngOnInit(): void {
@@ -74,17 +73,18 @@ export class CreatePostComponent implements OnInit {
 
     if (this.contents.valid) {
 
+      const formData = new FormData()
 
-      this.formData.append('body', this.contents.value)
+      formData.append('body', this.contents.value)
 
       let file = this.saveFile()
 
       if (file) {
-        this.formData.append('image', file, file.name)
+        formData.append('image', file, file.name)
       }
 
 
-      this.addNewPost();
+      this.addNewPost(formData);
 
 
     }
@@ -94,12 +94,12 @@ export class CreatePostComponent implements OnInit {
 
 
 
-  addNewPost() {
-    this.postService.createPost(this.formData).subscribe({
+  addNewPost(formData:FormData) {
+    this.postService.createPost(formData).subscribe({
       next: (req) => {
         console.log(req);
         this.visible.set(false)
-        // this.newPost.emit(true);
+        this.newPost.emit(true);
 
       },
           error:(err)=>{

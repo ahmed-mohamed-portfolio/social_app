@@ -16,20 +16,27 @@ export class DetailsPostComponent {
 
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly postService = inject(PostService)
-  id: WritableSignal<string | null> = signal(null)
   post: WritableSignal<Post> = signal({} as Post)
 
   ngOnInit(): void {
-    this.getPostId();
     this.getPost()
   }
 
-  getPostId() {
-    this.activatedRoute.paramMap.subscribe({ next: (urlParams) => { this.id.set(urlParams.get('id')); } })
+  getPostId() :string | null {
+    let  id: WritableSignal<string | null> = signal(null)
+
+    this.activatedRoute.paramMap.subscribe({
+       next: (urlParams) => { 
+        id.set(urlParams.get('id')); 
+      } })
+
+      return id() ;
   }
 
+
+
   getPost() {
-    this.postService.GetSinglePosts(this.id()).subscribe({
+    this.postService.GetSinglePosts(this.getPostId()).subscribe({
       next: (res) => {
         this.post.set(res.post)
       }

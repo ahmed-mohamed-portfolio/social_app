@@ -60,8 +60,7 @@ export class CreatePostComponent implements OnInit {
       const reader = new FileReader()
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
-        this.url.set(event.target.result)
-
+      this.url.set(event.target.result)
       }
 
     }
@@ -100,6 +99,10 @@ export class CreatePostComponent implements OnInit {
         console.log(req);
         this.visible.set(false)
         this.newPost.emit(true);
+
+      this.contents.reset();
+      this.saveFile.set(null);
+      this.url.set(null);
 
       },
           error:(err)=>{

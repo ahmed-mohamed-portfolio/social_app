@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
-import { allPosts } from '../../../../core/interfaces/posts';
+import { allPosts, Post } from '../../../../core/interfaces/posts';
+import { OnePost } from '../../../../core/interfaces/one-post';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ GetAllPosts(pageNumber:number):Observable<allPosts>{
 
 GetAllPostsInfo():Observable<allPosts>{
    return  this.http.get<allPosts>(environment.baseUrl+`posts`)
+}
+
+GetSinglePosts(id:string|null):Observable<OnePost>{
+   return  this.http.get<OnePost>(environment.baseUrl+`posts/${id}`)
 }
 
 GetUserPosts(id:string):Observable<any>{

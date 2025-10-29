@@ -23,9 +23,9 @@ export const routes: Routes = [
 
 {
     path:"",component:MainLayoutComponent,children:[
-        {path:"timeLine",component:TimelineComponent,title:"timeLine"},
-        {path:"profile",component:ProfileComponent,title:"profile"},
-        {path:"details",component:DetailsPostComponent,title:"details"},
+        { path:"timeLine",component:TimelineComponent,title:"timeLine" },
+        { path:"profile",component:ProfileComponent,title:"profile" },
+        { path:"details/:id",component:DetailsPostComponent,title:"post details" },
         { path:"changePassword",component:ChangePasswordComponent,title:"changePassword" },
     ]
 },

@@ -10,11 +10,12 @@ import { initFlowbite } from 'flowbite';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentService } from '../s-comment/services/comment.service';
 import { Comment } from '../../../../app/core/interfaces/posts';
+import { RouterLink } from "@angular/router";
 
 
 @Component({
     selector: 'app-s-post',
-    imports: [Menu, ButtonModule, DatePipe, SCommentComponent, ReactiveFormsModule],
+    imports: [Menu, ButtonModule, DatePipe, SCommentComponent, ReactiveFormsModule, RouterLink],
     templateUrl: './s-post.component.html',
     styleUrl: './s-post.component.scss'
 })
@@ -22,16 +23,20 @@ import { Comment } from '../../../../app/core/interfaces/posts';
 
 export class SPostComponent implements OnInit {
 
+    
     private commentService = inject(CommentService)
+
     commentControl: FormControl = new FormControl(null, [Validators.required])
 
     post: InputSignal<Post> = input({} as Post)
     // post:InputSignal<Post>=input.required()
 
-
     items: MenuItem[] | undefined;
-
+    
     commentsPost:WritableSignal<Comment[]>=signal([])
+    
+    showComments: WritableSignal<boolean> = signal(false)
+
 
     ngOnInit() {
 
@@ -58,8 +63,6 @@ export class SPostComponent implements OnInit {
     }
 
 
-
-    showComments: WritableSignal<boolean> = signal(false)
 
     toggleComments() {
 

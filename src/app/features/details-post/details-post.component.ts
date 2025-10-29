@@ -38,6 +38,8 @@ export class DetailsPostComponent {
   getPost() {
     this.postService.GetSinglePosts(this.getPostId()).subscribe({
       next: (res) => {
+        console.log(res);
+        
         this.post.set(res.post)
       }
     })

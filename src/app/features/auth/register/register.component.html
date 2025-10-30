@@ -36,25 +36,51 @@
         </app-input>
 
 
-
         <!-- date input -->
-        <app-input [control]="registerForm.get('dateOfBirth')" [typeInput]="'text'" [idInput]="'date'"
-            [placeHolder]="'7-10-1994'" [labelInput]="'Date of birth'">
-
-            Please enter a valid date (e.g., 7-10-1994).
-        </app-input>
-
-
-        <!-- gender input -->
-        <app-input [control]="registerForm.get('gender')" [typeInput]="'text'" [idInput]="'gender'"
-            [placeHolder]="'male or female'" [labelInput]="'Gender'">
-
-            Please enter a valid gender (e.g., male , female).
-        </app-input>
+           <label for="date" class="text-sm text-gray-900 font-medium" >Date of birth</label>
+           <p-datepicker inputId="date" [showIcon]="true" dateFormat="dd-mm-yy" placeholder="7-10-1994" formControlName="dateOfBirth" />
         
+        @if(registerForm.get("dateOfBirth")?.touched && registerForm.get("dateOfBirth")?.invalid){
+             <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert">
+                 <span class="font-medium">Error:</span>   Please choose a valid date (e.g., 7-10-1994).
+             </div>
+        }
+        
+        <!-- gender input -->
+    <div class="mt-4 flex justify-start items-baseline">
+        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100  me-7">
+            Gender
+        </label>
+
+           <div class="card flex justify-start">
+             <div class="flex flex-wrap gap-4">
+                 <div class="flex items-center">
+                   <p-radiobutton name="Gender" value="male" formControlName="gender" inputId="gender1" />
+                   <label for="gender1" class="ml-2">male</label>
+                 </div>
+                 
+                 <div class="flex items-center">
+                 <p-radiobutton name="Gender" value="female" formControlName="gender" inputId="gender2" />
+                  <label for="gender12" class="ml-2">female</label>
+                 </div>
+
+                </div>
+            </div>
+    </div>
+
+   @if (   registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid)  
+   {
+   <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert">
+        <span class="font-medium">Error:</span>     Please choose an gender.
+    </div>
+    }
+
+
 
         <button type="submit"
-            class=" cursor-pointer  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
+            class="mt-4 cursor-pointer  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
             @if(isLoading()==true){ <i class="fa-solid fa-sync fa-spin"></i>}
         </button>
 

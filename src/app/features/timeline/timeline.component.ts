@@ -82,9 +82,32 @@ export class TimelineComponent implements OnInit {
   submetPOst(e: boolean) {
     console.log(e);
     if (e) {
-      this.allPosts.set([]);
 
-      this.getLenthAndFirstGetAllPosts()
+      
+    this.postService.GetAllPostsInfo().subscribe({
+      next: (res) => {
+
+      
+      this.postService.GetAllPosts(res.paginationInfo.numberOfPages).subscribe({
+        next: (req) => {
+
+          console.log(req);
+          this.allPosts.update(posts => [req.posts.at(-1)!,...posts]);
+
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+
+
+
 
       e = false;
     }

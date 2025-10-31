@@ -38,6 +38,7 @@
 @defer (when showComments()) {
   @if (showComments()) {
     @for (comment of commentsPost(); track comment._id) {
+        
    <app-s-comment [comment]="comment" ></app-s-comment>
 }}
 

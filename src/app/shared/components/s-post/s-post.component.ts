@@ -43,6 +43,7 @@ export class SPostComponent implements OnInit {
 
         this.commentsPost.set(this.post().comments)
 
+
         initFlowbite();
 
 

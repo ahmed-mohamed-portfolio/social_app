@@ -81,7 +81,12 @@ export class SPostComponent implements OnInit {
     editPost: WritableSignal<boolean> = signal(false)
 
     onEdit() {
-        this.showDialog() 
+
+
+          this.contents.setValue(this.post().body ?? '');
+          this.url.set(this.post().image ?? null); 
+        //   this.saveFile.set(null);               
+          this.showDialog() 
     }
 
 
@@ -171,7 +176,6 @@ export class SPostComponent implements OnInit {
 
     if (input.files && input.files.length > 0) {
       this.saveFile.set(input.files[0])
-      console.log("input.files[0]",input.files[0]);
 
 
       // https://www.youtube.com/watch?v=Z5Yf0xJVXYI
@@ -183,6 +187,12 @@ export class SPostComponent implements OnInit {
       }
 
     }
+
+  }
+
+
+  removeImg(){
+      this.url.set(null)
 
   }
 

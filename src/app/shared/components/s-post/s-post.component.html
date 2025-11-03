@@ -1,74 +1,80 @@
 <section class="w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] bg-white p-5 mb-4 mx-auto rounded-[10px]">
 
-<div class="flex justify-between items-center">
-    <div class="flex items-center">
-         <img [src]="post().user.photo" class="size-9 rounded-full" [alt]="post().user.name">
-         <div class="ps-2 flex flex-col">
-            <p class="text-[15px]" >{{post().user.name}}</p>
-            <span class="text-[10px]">{{post().createdAt |date }}</span>
-         </div>
+    <div class="flex justify-between items-center">
+        <div class="flex items-center">
+            <img [src]="post().user.photo" class="size-9 rounded-full" [alt]="post().user.name">
+            <div class="ps-2 flex flex-col">
+                <p class="text-[15px]">{{post().user.name}}</p>
+                <span class="text-[10px]">{{post().createdAt |date }}</span>
+            </div>
+        </div>
+        @if(this.post().user._id===localStorageId()){
+
+        <div class="relative">
+            <div class="card flex justify-center">
+                <p-menu #menu [model]="items" [popup]="true" />
+                <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-h" />
+            </div>
+        </div>
+
+        }
     </div>
-    @if(this.post().user._id===localStorageId()){
 
-    <div class="relative" >
-       <div class="card flex justify-center">
-          <p-menu #menu [model]="items" [popup]="true" />
-          <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-h"/>
-       </div>
+    <div [routerLink]="['/details',post().id]" class="cursor-pointer">
+
+        @if (post().body) {
+        <p class="my-4 text-[0.85rem]">{{post().body}}</p>
+
+        }
+
+        @if (post().image) {
+        <img [src]="post().image" [alt]="post().user.name" class=" mx-auto rounded-[5px]">
+
+        }
+
     </div>
-            
-    }
-</div>
+    <!-- comments -->
+    <button class="text-blue-600 text-[15px] my-2 cursor-pointer" (click)="toggleComments()"> {{showComments()? 'hide
+        comments':'show comments'}} </button>
 
-<div [routerLink]="['/details',post().id]" class="cursor-pointer">
+    <div class="max-h-44 overflow-auto rounded-md">
 
-@if (post().body) {
-<p class="my-4 text-[0.85rem]">{{post().body}}</p>
+        @defer (when showComments()) {
+        @if (showComments()) {
+        @for (comment of commentsPost(); track comment._id) {
 
-}
+        <app-s-comment [comment]="comment"></app-s-comment>
+        }}
 
-@if (post().image) {
-    <img [src]="post().image" [alt]="post().user.name" class=" mx-auto rounded-[5px]">
-
-}
-    
-</div>
-<!-- comments -->
-<button class="text-blue-600 text-[15px] my-2 cursor-pointer" (click)="toggleComments()"> {{showComments()? 'hide comments':'show comments'}} </button>
-
-<div class="max-h-44 overflow-auto rounded-md" >
-
-@defer (when showComments()) {
-  @if (showComments()) {
-    @for (comment of commentsPost(); track comment._id) {
-        
-   <app-s-comment [comment]="comment" ></app-s-comment>
-}}
-
-}  @placeholder {<p class="text-gray-400 text-sm"> {{commentsPost().length}} comments</p>}
-   @loading {<p class="text-sm text-gray-500">loading comments...</p>}
-   @error {<p class="text-sm text-gray-500">Failed to load comments.</p>}
+        } @placeholder {<p class="text-gray-400 text-sm"> {{commentsPost().length}} comments</p>}
+        @loading {<p class="text-sm text-gray-500">loading comments...</p>}
+        @error {<p class="text-sm text-gray-500">Failed to load comments.</p>}
 
 
-</div>
-
-
-
-<!-- create comment -->
-
-<form    (submit)="commentSubmit($event)" >
-    <label for="chat" class="sr-only">Your message</label>
-    <div class="flex items-center mt-1.5 p-2 rounded-md bg-[#eee] dark:bg-gray-700">
-
-        <textarea [formControl]="commentControl" id="chat" rows="1" class="block  p-2 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
-            <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
-            <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"/>
-            </svg>
-            <span class="sr-only">Send message</span>
-        </button>
     </div>
-</form>
+
+
+
+    <!-- create comment -->
+
+    <form (submit)="commentSubmit($event)">
+        <label for="chat" class="sr-only">Your message</label>
+        <div class="flex items-center mt-1.5 p-2 rounded-md bg-[#eee] dark:bg-gray-700">
+
+            <textarea [formControl]="commentControl" id="chat" rows="1"
+                class="block  p-2 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Your message..."></textarea>
+            <button type="submit"
+                class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 18 20">
+                    <path
+                        d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z" />
+                </svg>
+                <span class="sr-only">Send message</span>
+            </button>
+        </div>
+    </form>
 
 
 </section>
@@ -97,22 +103,22 @@
 
 
         <div class="card p-4 ">
-            <textarea [formControl]="contents" placeholder="write your thouts here" class="w-full h-20" rows="5" cols="30" pTextarea
-             name="postContent"></textarea>
+            <textarea [formControl]="contents" placeholder="write your thouts here" class="w-full h-20" rows="5"
+                cols="30" pTextarea name="postContent"></textarea>
         </div>
 
 
-         <div class="flex items-center justify-center w-full pb-4 pr-4 pl-4 ">
+        <div class="flex items-center justify-center w-full pb-4 pr-4 pl-4 ">
             <label for="dropzone-file"
                 class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
 
 
-             @if(url()){
+                    @if(url()){
 
-                    <img [src]="url()" alt="" class="size-48">
+                    <img [src]="url()" alt="" class="w-fit">
 
-             }@else {
+                    }@else {
 
                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -123,13 +129,13 @@
                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to
                             upload</span> or drag and drop</p>
                     <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-             }
+                    }
 
-             
+
                 </div>
                 <input (change)="changeImage($event)" id="dropzone-file" type="file" class="hidden" />
             </label>
-        </div> 
+        </div>
 
 
 

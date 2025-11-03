@@ -156,9 +156,7 @@ export class SPostComponent implements OnInit {
 
   url: WritableSignal<string | null> = signal(null);
 
-  newEditPost = output<boolean>();
-
-
+  newEditPostid = output<string>();
 
 
 
@@ -173,6 +171,7 @@ export class SPostComponent implements OnInit {
 
     if (input.files && input.files.length > 0) {
       this.saveFile.set(input.files[0])
+      console.log("input.files[0]",input.files[0]);
 
 
       // https://www.youtube.com/watch?v=Z5Yf0xJVXYI
@@ -180,6 +179,7 @@ export class SPostComponent implements OnInit {
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
       this.url.set(event.target.result)
+
       }
 
     }
@@ -217,7 +217,7 @@ export class SPostComponent implements OnInit {
       next: (req) => {
         console.log(req);
         this.visible.set(false)
-        this.newEditPost.emit(true);
+        this.newEditPostid.emit(this.post().id);
 
       this.contents.reset();
       this.saveFile.set(null);

@@ -121,13 +121,22 @@ export class TimelineComponent implements OnInit {
   }
 
 
-  submetEditPOst(e:boolean){
-    console.log(e);
-    if (e) {
-
-      
-
-      e = false;
+  submetEditPOst(postId: string | null) {
+    if (!postId) {
+      return;
     }
+
+    this.postService.GetSinglePosts(postId).subscribe({
+      next: ( OnePost ) => {
+        this.allPosts.update(posts =>
+          posts.map(existing => existing.id === OnePost.post.id ? { ...existing, ...OnePost.post } : existing )
+        );
+      },
+      error: (err) => console.log(err)
+    });
   }
+
+
+
+  
 }

@@ -28,6 +28,7 @@ userInfo:WritableSignal<User>=signal({} as User)
           next:(res)=>{
            console.log(res);
            this.userInfo.set(res.user)
+           localStorage.setItem('id',res.user._id)
           }
          })
       }

@@ -17,6 +17,10 @@ createPost(data:object):Observable<any>{
    return  this.http.post(environment.baseUrl+'posts',data)
 }
 
+editPost(data:object,id:string):Observable<any>{
+   return  this.http.put(environment.baseUrl+`posts/${id}`,data)
+}
+
 GetAllPosts(pageNumber:number):Observable<allPosts>{
    return  this.http.get<allPosts>(environment.baseUrl+`posts?page=${pageNumber}`)
 }

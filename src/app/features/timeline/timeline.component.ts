@@ -1,16 +1,16 @@
-import { Component, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { SPostComponent } from "../../shared/components/s-post/s-post.component";
 import { PostService } from '../../shared/components/s-post/services/post.service';
 import { Post } from '../../core/interfaces/posts';
-import { Skeleton } from 'primeng/skeleton';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PaginatorModule } from 'primeng/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
 
 
 @Component({
   selector: 'app-timeline',
-  imports: [CreatePostComponent, SPostComponent, Skeleton, PaginatorModule, InfiniteScrollDirective],
+  imports: [CreatePostComponent, SPostComponent, PaginatorModule, InfiniteScrollDirective, SkeletonCardComponent],
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss',
 
@@ -23,6 +23,8 @@ export class TimelineComponent implements OnInit {
   private readonly postService = inject(PostService);
   allPosts: WritableSignal<Post[]> = signal([]);
   pageNumber: WritableSignal<number> = signal(0);
+  lastpagePostNum: WritableSignal<number> = signal(0);
+
   isLoading = signal(false);
   loader = signal(false);
 
@@ -54,9 +56,16 @@ export class TimelineComponent implements OnInit {
       next: (req) => {
 
         console.log(req);
+
         this.allPosts.update(posts => [...posts, ...req.posts.reverse()]);
         this.isLoading.set(false);
         this.loader.set(false)
+
+        if(req.posts.length==1){
+              this.pageNumber.update(v => v - 1);
+                  this.getAllPosts();
+
+        }
 
       },
       error: (err) => {
@@ -106,12 +115,19 @@ export class TimelineComponent implements OnInit {
       }
     })
 
-
-
-
       e = false;
     }
 
   }
 
+
+  submetEditPOst(e:boolean){
+    console.log(e);
+    if (e) {
+
+      
+
+      e = false;
+    }
+  }
 }

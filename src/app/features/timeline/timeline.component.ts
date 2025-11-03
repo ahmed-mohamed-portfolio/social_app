@@ -53,15 +53,15 @@ export class TimelineComponent implements OnInit {
 
     this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
-      next: (req) => {
+      next: (res) => {
 
-        console.log(req);
+        console.log(res);
 
-        this.allPosts.update(posts => [...posts, ...req.posts.reverse()]);
+        this.allPosts.update(posts => [...posts, ...res.posts.reverse()]);
         this.isLoading.set(false);
         this.loader.set(false)
 
-        if(req.posts.length==1){
+        if(res.posts.length==1){
               this.pageNumber.update(v => v - 1);
                   this.getAllPosts();
 

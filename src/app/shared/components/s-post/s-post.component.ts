@@ -224,8 +224,8 @@ export class SPostComponent implements OnInit {
 
   editUserPost(formData:FormData) {
     this.postService.editPost(formData,this.post().id).subscribe({
-      next: (req) => {
-        console.log(req);
+      next: (res) => {
+        console.log(res);
         this.visible.set(false)
         this.newEditPostid.emit(this.post().id);
 

@@ -95,8 +95,8 @@ export class CreatePostComponent implements OnInit {
 
   addNewPost(formData:FormData) {
     this.postService.createPost(formData).subscribe({
-      next: (req) => {
-        console.log(req);
+      next: (res) => {
+        console.log(res);
         this.visible.set(false)
         this.newPost.emit(true);
 

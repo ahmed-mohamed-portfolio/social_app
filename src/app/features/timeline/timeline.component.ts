@@ -6,6 +6,7 @@ import { Post } from '../../core/interfaces/posts';
 import { PaginatorModule } from 'primeng/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
+import { OnePost } from '../../core/interfaces/one-post';
 
 
 @Component({
@@ -138,5 +139,14 @@ export class TimelineComponent implements OnInit {
 
 
 
-  
+  submetDeletePOst(post: Post){
+
+        this.allPosts.update(posts =>
+          posts.filter(existing => existing.id !== post.id)
+        );
+ 
+}
+
+
+
 }

@@ -12,9 +12,8 @@ import { CommentService } from '../s-comment/services/comment.service';
 import { Comment } from '../../../../app/core/interfaces/posts';
 import { RouterLink } from "@angular/router";
 
-
 import { InputTextModule } from 'primeng/inputtext';
-import {  FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { PostService } from '../s-post/services/post.service';
@@ -22,108 +21,133 @@ import { PostService } from '../s-post/services/post.service';
 
 
 @Component({
-    selector: 'app-s-post',
-    imports: [Menu, ButtonModule, DatePipe, SCommentComponent, ReactiveFormsModule, RouterLink,    FormsModule, InputTextModule, Dialog, ButtonModule, TextareaModule, ReactiveFormsModule],
-    templateUrl: './s-post.component.html',
-    styleUrl: './s-post.component.scss'
+  selector: 'app-s-post',
+  imports: [Menu, ButtonModule, DatePipe, SCommentComponent, ReactiveFormsModule, RouterLink, FormsModule, InputTextModule, Dialog, ButtonModule, TextareaModule, ReactiveFormsModule],
+  templateUrl: './s-post.component.html',
+  styleUrl: './s-post.component.scss'
 })
 
 
 export class SPostComponent implements OnInit {
 
 
-    private commentService = inject(CommentService)
+  private commentService = inject(CommentService)
 
-    commentControl: FormControl = new FormControl(null, [Validators.required])
+  commentControl: FormControl = new FormControl(null, [Validators.required])
 
-    post: InputSignal<Post> = input({} as Post)
-    // post:InputSignal<Post>=input.required()
+  post: InputSignal<Post> = input({} as Post)
+  // post:InputSignal<Post>=input.required()
 
-    items: MenuItem[] | undefined;
+  items: MenuItem[] | undefined;
 
-    commentsPost: WritableSignal<Comment[]> = signal([])
+  commentsPost: WritableSignal<Comment[]> = signal([])
 
-    showComments: WritableSignal<boolean> = signal(false)
+  showComments: WritableSignal<boolean> = signal(false)
 
-    visible: WritableSignal<boolean> = signal(false);
+  visible: WritableSignal<boolean> = signal(false);
 
-    localStorageId: WritableSignal<string | null> = signal(null)
+  localStorageId: WritableSignal<string | null> = signal(null)
 
-    ngOnInit() {
+  ngOnInit() {
 
-        this.localStorageId.set(localStorage.getItem('id'))
-        this.commentsPost.set(this.post().comments)
-
-
-        initFlowbite();
+    this.localStorageId.set(localStorage.getItem('id'))
+    this.commentsPost.set(this.post().comments)
 
 
-        this.items = [
-            {
-                items: [
-                    {
-                        label: 'Edit',
-                        icon: 'pi pi-file-edit',
-                        command: () => this.onEdit()
-
-                    },
-                    {
-                        label: 'Delete',
-                        icon: PrimeIcons.TRASH
-                    }
-                ]
-            }
-        ];
-    }
+    initFlowbite();
 
 
+    this.items = [
+      {
+        items: [
+          {
+            label: 'Edit',
+            icon: 'pi pi-file-edit',
+            command: () => this.onEdit()
 
-    editPost: WritableSignal<boolean> = signal(false)
+          },
+          {
+            label: 'Delete',
+            icon: PrimeIcons.TRASH,
+            command: () => this.trueShowOnDelete()
 
-    onEdit() {
-
-
-          this.contents.setValue(this.post().body ?? '');
-          this.url.set(this.post().image ?? null); 
-        //   this.saveFile.set(null);               
-          this.showDialog() 
-    }
-
-
-    toggleComments() {
-
-        this.showComments.update((v) => {
-            return !v
-        });
-
-    }
-
-
-    commentSubmit(e: Event) {
-
-        e.preventDefault();
-
-        if (this.commentControl.valid) {
-
-            let commentData = {
-                content: this.commentControl.value,
-                post: this.post()._id
-            }
+          }
+        ]
+      }
+    ];
+  }
 
 
-            this.commentService.createComment(commentData).subscribe({
-                next: (res) => {
-                    this.commentsPost.set(res.comments)
-                    this.commentControl.reset()
-                },
-                error: (err) => {
-                    console.log(err);
 
-                }
-            })
+  editPost: WritableSignal<boolean> = signal(false)
+
+  onEdit() {
+
+    this.contents.setValue(this.post().body ?? '');
+    this.url.set(this.post().image ?? null);
+    //this.saveFile.set(null);               
+    this.showDialog();
+
+  }
+
+
+showOnDelete:WritableSignal<boolean>=signal(false)
+
+trueShowOnDelete(){
+  this.showOnDelete.set(true)
+}
+
+falseShowOnDelete(){
+  this.showOnDelete.set(false)
+}
+  onDelete() {
+
+    this.postService.deletePost(this.post().id).subscribe({
+      next: (res) => {
+        this.deletePost.emit(res.post);
+      },error:(err)=>{
+        console.log(err);
+        
+      }
+    })
+
+  }
+
+
+  toggleComments() {
+
+    this.showComments.update((v) => {
+      return !v
+    });
+
+  }
+
+
+  commentSubmit(e: Event) {
+
+    e.preventDefault();
+
+    if (this.commentControl.valid) {
+
+      let commentData = {
+        content: this.commentControl.value,
+        post: this.post()._id
+      }
+
+
+      this.commentService.createComment(commentData).subscribe({
+        next: (res) => {
+          this.commentsPost.set(res.comments)
+          this.commentControl.reset()
+        },
+        error: (err) => {
+          console.log(err);
 
         }
+      })
+
     }
+  }
 
 
 
@@ -145,12 +169,12 @@ export class SPostComponent implements OnInit {
 
 
 
-// <!-- i need to make it in single compunent -->
+  // <!-- i need to make it in single compunent -->
 
 
 
   private readonly postService = inject(PostService)
-  
+
   saveFile: WritableSignal<File | null> = signal(null)
 
   contents: FormControl = new FormControl(null, [Validators.required])
@@ -162,13 +186,14 @@ export class SPostComponent implements OnInit {
   url: WritableSignal<string | null> = signal(null);
 
   newEditPostid = output<string>();
+  deletePost = output<Post>();
 
 
 
   showDialog() {
     this.visible.set(true)
   }
-  
+
 
   changeImage(e: Event): void {
 
@@ -182,7 +207,7 @@ export class SPostComponent implements OnInit {
       const reader = new FileReader()
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
-      this.url.set(event.target.result)
+        this.url.set(event.target.result)
 
       }
 
@@ -191,10 +216,14 @@ export class SPostComponent implements OnInit {
   }
 
 
-  removeImg(){
-      this.url.set(null)
+
+  removeImg() {
+
+    this.url.set(null)
+    this.saveFile.set(null)
 
   }
+
 
 
   submitForm(e: Event): void {
@@ -211,9 +240,7 @@ export class SPostComponent implements OnInit {
         formData.append('image', file, file.name)
       }
 
-
       this.editUserPost(formData);
-
 
     }
 
@@ -221,22 +248,22 @@ export class SPostComponent implements OnInit {
 
 
 
+  editUserPost(formData: FormData) {
 
-  editUserPost(formData:FormData) {
-    this.postService.editPost(formData,this.post().id).subscribe({
+    this.postService.editPost(formData, this.post().id).subscribe({
       next: (res) => {
         console.log(res);
         this.visible.set(false)
         this.newEditPostid.emit(this.post().id);
 
-      this.contents.reset();
-      this.saveFile.set(null);
-      this.url.set(null);
+        this.contents.reset();
+        this.saveFile.set(null);
+        this.url.set(null);
 
       },
-          error:(err)=>{
-          console.log(err);
-        }
+      error: (err) => {
+        console.log(err);
+      }
     })
   }
 

@@ -34,8 +34,7 @@
 
     </div>
     <!-- comments -->
-    <button class="text-blue-600 text-[15px] my-2 cursor-pointer" (click)="toggleComments()"> {{showComments()? 'hide
-        comments':'show comments'}} </button>
+    <button class="text-blue-600 text-[15px] my-2 cursor-pointer" (click)="toggleComments()"> {{showComments()? 'hide comments':'show comments'}} </button>
 
     <div class="max-h-44 overflow-auto rounded-md">
 
@@ -43,7 +42,7 @@
         @if (showComments()) {
         @for (comment of commentsPost(); track comment._id) {
 
-        <app-s-comment [comment]="comment"></app-s-comment>
+        <app-s-comment (deletedComment)="removeDeletedComment($event)" [comment]="comment"></app-s-comment>
         }}
 
         } @placeholder {<p class="text-gray-400 text-sm"> {{commentsPost().length}} comments</p>}
@@ -184,3 +183,14 @@
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

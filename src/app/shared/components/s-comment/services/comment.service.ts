@@ -18,4 +18,16 @@ export class CommentService {
   getPostComment(idPost:string):Observable<any>{
     return this.http.get(environment.baseUrl+`posts/${idPost}/comments`)
   }
+
+  // https://linked-posts.routemisr.com/comments/664d47ffbc90df274cc45b00
+
+  updateComment(idComment:string,data:object):Observable<any>{
+    return this.http.put(environment.baseUrl+`comments/${idComment}`,data)
+  }
+
+    deleteComment(idComment:string):Observable<any>{
+    return this.http.delete(environment.baseUrl+`comments/${idComment}`)
+  }
+
+
 }

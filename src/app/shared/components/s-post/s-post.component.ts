@@ -154,7 +154,10 @@ falseShowOnDelete(){
 
 
 
+removeDeletedComment(comment:Comment){
+this.commentsPost.update(comments => comments.filter(existing => existing !== comment))
 
+}
 
 
 

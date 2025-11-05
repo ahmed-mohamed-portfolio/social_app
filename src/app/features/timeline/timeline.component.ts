@@ -40,8 +40,10 @@ export class TimelineComponent implements OnInit {
   getLenthAndFirstGetAllPosts() {
     this.postService.GetAllPostsInfo().subscribe({
       next: (res) => {
+        console.log("test0");
         this.pageNumber.set(res.paginationInfo.numberOfPages)
         this.getAllPosts();
+        
       },
       error: (err) => {
         console.log(err);
@@ -52,6 +54,8 @@ export class TimelineComponent implements OnInit {
 
   getAllPosts() {
 
+    console.log("test");
+    
     this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
       next: (res) => {

@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 
 import { Component, inject, input, InputSignal, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
@@ -48,6 +49,13 @@ export class SPostComponent implements OnInit {
 
   localStorageId: WritableSignal<string | null> = signal(null)
 
+  showOnDelete:WritableSignal<boolean>=signal(false)
+
+  editPost: WritableSignal<boolean> = signal(false)
+
+  private toastrService=inject(ToastrService)
+
+
   ngOnInit() {
 
     this.localStorageId.set(localStorage.getItem('id'))
@@ -79,7 +87,6 @@ export class SPostComponent implements OnInit {
 
 
 
-  editPost: WritableSignal<boolean> = signal(false)
 
   onEdit() {
 
@@ -91,7 +98,6 @@ export class SPostComponent implements OnInit {
   }
 
 
-showOnDelete:WritableSignal<boolean>=signal(false)
 
 trueShowOnDelete(){
   this.showOnDelete.set(true)
@@ -100,6 +106,8 @@ trueShowOnDelete(){
 falseShowOnDelete(){
   this.showOnDelete.set(false)
 }
+
+
   onDelete() {
 
     this.postService.deletePost(this.post().id).subscribe({
@@ -142,13 +150,13 @@ falseShowOnDelete(){
         },
         error: (err) => {
           console.log(err);
+          this.toastrService.error(err.error.error)
 
         }
       })
 
     }
   }
-
 
 
 
@@ -189,6 +197,7 @@ this.commentsPost.update(comments => comments.filter(existing => existing !== co
   url: WritableSignal<string | null> = signal(null);
 
   newEditPostid = output<string>();
+  
   deletePost = output<Post>();
 
 

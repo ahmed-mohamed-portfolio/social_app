@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../features/auth/services/user.service';
@@ -16,6 +17,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 })
 export class RegisterComponent implements OnInit{
   
+  private toastrService =inject(ToastrService)
   
   private readonly router = inject(Router)
   private readonly fb = inject(FormBuilder);
@@ -92,6 +94,7 @@ export class RegisterComponent implements OnInit{
 
           console.log("register response", res);
           if (res.message == "success") {
+            this.toastrService.success("account created successfully")
             this.isLoading.set(false);
             this.route.navigate(["/login"]);
           }
@@ -100,7 +103,7 @@ export class RegisterComponent implements OnInit{
 
         error: (err) => {
           console.log(err);
-
+          this.toastrService.error(err.error.error)
           this.errorMsg.set(err.error.message);
           this.isLoading.set(false);
         },

@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { SPostComponent } from "../../shared/components/s-post/s-post.component";
@@ -6,7 +7,6 @@ import { Post } from '../../core/interfaces/posts';
 import { PaginatorModule } from 'primeng/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
-import { OnePost } from '../../core/interfaces/one-post';
 
 
 @Component({
@@ -21,13 +21,15 @@ import { OnePost } from '../../core/interfaces/one-post';
 export class TimelineComponent implements OnInit {
 
 
-  private readonly postService = inject(PostService);
   allPosts: WritableSignal<Post[]> = signal([]);
   pageNumber: WritableSignal<number> = signal(0);
   lastpagePostNum: WritableSignal<number> = signal(0);
-
+  private readonly postService = inject(PostService);
+  private toastrService = inject(ToastrService)
+  
   isLoading = signal(false);
   loader = signal(false);
+
 
 
   ngOnInit(): void {
@@ -37,30 +39,28 @@ export class TimelineComponent implements OnInit {
   }
 
 
+
+
   getLenthAndFirstGetAllPosts() {
     this.postService.GetAllPostsInfo().subscribe({
       next: (res) => {
-        console.log("test0");
-        this.pageNumber.set(res.paginationInfo.numberOfPages)
+        this.pageNumber.set(res.paginationInfo.numberOfPages);
         this.getAllPosts();
-        
       },
       error: (err) => {
-        console.log(err);
+        this.toastrService.error(err.message,err.name);
       }
     })
   }
 
 
-  getAllPosts() {
 
-    console.log("test");
+
+  getAllPosts() {
     
     this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
       next: (res) => {
-
-        console.log(res);
 
         this.allPosts.update(posts => [...posts, ...res.posts.reverse()]);
         this.isLoading.set(false);
@@ -68,13 +68,12 @@ export class TimelineComponent implements OnInit {
 
         if(res.posts.length==1){
               this.pageNumber.update(v => v - 1);
-                  this.getAllPosts();
-
+              this.getAllPosts();
         }
 
       },
-      error: (err) => {
-        console.log(err);
+      error: (err) => {        
+        this.toastrService.error(err.message,err.name)
       }
     })
 
@@ -94,7 +93,7 @@ export class TimelineComponent implements OnInit {
 
 
   submetPOst(e: boolean) {
-    console.log(e);
+
     if (e) {
 
       
@@ -126,6 +125,9 @@ export class TimelineComponent implements OnInit {
   }
 
 
+
+
+
   submetEditPOst(postId: string | null) {
     if (!postId) {
       return;
@@ -142,6 +144,8 @@ export class TimelineComponent implements OnInit {
   }
 
 
+
+  
 
   submetDeletePOst(post: Post){
 

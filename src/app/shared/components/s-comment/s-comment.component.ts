@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, inject, input, InputSignal, output, signal, WritableSignal } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { Menu } from 'primeng/menu';
@@ -31,15 +32,19 @@ export class SCommentComponent {
     newComment: WritableSignal<string> = signal('')
     
     deletedComment=output<Comment>()
-  localStorageId: WritableSignal<string | null> = signal(null)
 
+    localStorageId: WritableSignal<string | null> = signal(null)
+
+    showOnDelete:WritableSignal<boolean>=signal(false)
+
+    private toastrService=inject(ToastrService)
 
 
     ngOnInit() {
 
         console.log(this.comment());
         
-    this.localStorageId.set(localStorage.getItem('id'))
+        this.localStorageId.set(localStorage.getItem('id'))
 
         initFlowbite();
 
@@ -57,7 +62,7 @@ export class SCommentComponent {
                     {
                         label: 'Delete',
                         icon: PrimeIcons.TRASH,
-                        command: () => this.onDelete()
+                        command: () => this.trueShowOnDelete()
 
                     }
                 ]
@@ -111,11 +116,21 @@ export class SCommentComponent {
                 }
 
             }, error: (err) => {
-                console.log(err);
+                this.toastrService.error(err.error.error)
             }
         })
 
     }
+
+
+
+trueShowOnDelete(){
+  this.showOnDelete.set(true)
+}
+
+falseShowOnDelete(){
+  this.showOnDelete.set(false)
+}
 
 
 }

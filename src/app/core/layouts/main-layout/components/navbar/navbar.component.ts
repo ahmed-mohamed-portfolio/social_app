@@ -1,7 +1,7 @@
 import { ProfileDataService } from './../../../../services/profile-data.service';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { User } from '../../../../interfaces/user-info';
 
 @Component({
@@ -11,11 +11,11 @@ import { User } from '../../../../interfaces/user-info';
   styleUrl: './navbar.component.scss'
 })
 
-export class NavbarComponent implements OnInit{
-  
-private readonly profileDataService = inject(ProfileDataService)
+export class NavbarComponent implements OnInit {
 
-userInfo:WritableSignal<User>=signal({} as User)
+  private readonly profileDataService = inject(ProfileDataService)
+  private router=inject(Router)
+  userInfo: WritableSignal<User> = signal({} as User)
 
   ngOnInit(): void {
     initFlowbite();
@@ -23,14 +23,20 @@ userInfo:WritableSignal<User>=signal({} as User)
     this.getProfileInfos()
   }
 
-      getProfileInfos(){
-         this.profileDataService.getProfileData().subscribe({
-          next:(res)=>{
-           console.log(res);
-           this.userInfo.set(res.user)
-           localStorage.setItem('id',res.user._id)
-          }
-         })
+  getProfileInfos() {
+    this.profileDataService.getProfileData().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.userInfo.set(res.user)
+        localStorage.setItem('id', res.user._id)
       }
+    })
+  }
+
+
+  signout(){
+    localStorage.removeItem("token")
+    this.router.navigate(['/login'])
+  }
 
 }

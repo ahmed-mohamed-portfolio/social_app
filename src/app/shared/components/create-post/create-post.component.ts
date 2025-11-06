@@ -67,6 +67,13 @@ export class CreatePostComponent implements OnInit {
   }
 
 
+  removeImg() {
+
+    this.url.set(null)
+    this.saveFile.set(null)
+
+  }
+
   submitForm(e: Event): void {
 
     if (this.contents.valid) {
@@ -93,25 +100,28 @@ export class CreatePostComponent implements OnInit {
 
 
   addNewPost(formData: FormData) {
-    this.postService.createPost(formData).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.visible.set(false)
-        this.newPost.emit(true);
 
-        this.contents.reset();
-        this.saveFile.set(null);
-        this.url.set(null);
 
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+
+        this.postService.createPost(formData).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.visible.set(false)
+            this.newPost.emit(true);
+
+            this.contents.reset();
+            this.saveFile.set(null);
+            this.url.set(null);
+
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
+
+
+
+
+
   }
-
-
-
-
-
 }

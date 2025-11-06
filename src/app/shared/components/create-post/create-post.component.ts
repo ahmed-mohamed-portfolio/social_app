@@ -21,7 +21,6 @@ import { PostService } from '../s-post/services/post.service';
 export class CreatePostComponent implements OnInit {
 
   private readonly postService = inject(PostService)
-  
 
   saveFile: WritableSignal<File | null> = signal(null)
 
@@ -46,7 +45,7 @@ export class CreatePostComponent implements OnInit {
   showDialog() {
     this.visible.set(true)
   }
-  
+
 
   changeImage(e: Event): void {
 
@@ -60,7 +59,7 @@ export class CreatePostComponent implements OnInit {
       const reader = new FileReader()
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
-      this.url.set(event.target.result)
+        this.url.set(event.target.result)
       }
 
     }
@@ -93,21 +92,21 @@ export class CreatePostComponent implements OnInit {
 
 
 
-  addNewPost(formData:FormData) {
+  addNewPost(formData: FormData) {
     this.postService.createPost(formData).subscribe({
       next: (res) => {
         console.log(res);
         this.visible.set(false)
         this.newPost.emit(true);
 
-      this.contents.reset();
-      this.saveFile.set(null);
-      this.url.set(null);
+        this.contents.reset();
+        this.saveFile.set(null);
+        this.url.set(null);
 
       },
-          error:(err)=>{
-          console.log(err);
-        }
+      error: (err) => {
+        console.log(err);
+      }
     })
   }
 

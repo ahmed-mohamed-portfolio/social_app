@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { SPostComponent } from "../../shared/components/s-post/s-post.component";
 import { PostService } from '../../shared/components/s-post/services/post.service';
@@ -19,6 +19,7 @@ import { SkeletonCardComponent } from "../../shared/components/skeleton-card/ske
 
 
 export class TimelineComponent implements OnInit {
+
 
 
   allPosts: WritableSignal<Post[]> = signal([]);
@@ -80,6 +81,7 @@ export class TimelineComponent implements OnInit {
   }
 
 
+
   onScrollDown() {
 
     if (this.isLoading() || this.pageNumber()<=1 ) return;
@@ -91,6 +93,7 @@ export class TimelineComponent implements OnInit {
   }
 
 
+  
 
   submetPOst(e: boolean) {
 

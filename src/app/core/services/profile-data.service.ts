@@ -14,4 +14,8 @@ export class ProfileDataService {
      return this.http.get<UserInfo>(environment.baseUrl + 'users/profile-data')
   }
 
+  uploadProfilePhoto(photo:FormData):Observable<any>{
+    return this.http.put(environment.baseUrl + 'users/upload-photo',photo)
+  }
+
 }

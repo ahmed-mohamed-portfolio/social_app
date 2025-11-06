@@ -34,7 +34,7 @@ GetSinglePosts(id:string|null):Observable<OnePost>{
 }
 
 GetUserPosts(id:string):Observable<any>{
-   return  this.http.get(environment.baseUrl+`users/${id}/posts?limit=2`)
+   return  this.http.get(environment.baseUrl+`users/${id}/posts`)
 }
 
 deletePost(id:string):Observable<any>{

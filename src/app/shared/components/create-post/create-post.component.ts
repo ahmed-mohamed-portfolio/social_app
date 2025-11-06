@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
@@ -35,6 +35,8 @@ export class CreatePostComponent implements OnInit {
   url: WritableSignal<string | null> = signal(null);
 
   newPost = output<boolean>();
+
+  inProfile = input<boolean>(false);
 
 
   ngOnInit(): void {

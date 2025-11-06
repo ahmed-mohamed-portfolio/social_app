@@ -5,10 +5,13 @@ import { UserInfo } from '../../core/interfaces/user-info';
 import { DatePipe } from '@angular/common';
 import { PostService } from '../../shared/components/s-post/services/post.service';
 import { Post } from '../../core/interfaces/posts';
+import { SPostComponent } from "../../shared/components/s-post/s-post.component";
+import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
+import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 
 @Component({
   selector: 'app-profile',
-  imports: [DatePipe],
+  imports: [DatePipe, SPostComponent, SkeletonCardComponent, CreatePostComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -22,17 +25,16 @@ export class ProfileComponent implements OnInit {
   url: WritableSignal<string | null> = signal(null);
   toastrService=inject(ToastrService)
   postService=inject(PostService)
-
+  iamHere:WritableSignal<boolean>=signal(false)
   allUserPosts:WritableSignal<Post[]>=signal([])
-  numberOfPages:WritableSignal<number>=signal(0)
   
   ngOnInit(): void {
-
+    this.iamHere.set(true)
     this.getProfileInfos();
 
   }
 
-
+     // there is problem in backend so i cant get baram page i can get limit only
   getProfileInfos() {
     this.profileDataService.getProfileData().subscribe({
       next: (res) => {
@@ -41,9 +43,11 @@ export class ProfileComponent implements OnInit {
 
           this.postService.GetUserPosts(res.user._id).subscribe({
             next:(res)=>{
+
              console.log("all user posts",res);
              this.allUserPosts.set(res.posts)
-             this.numberOfPages.set(res.paginationInfo.numberOfPages)
+             this.allUserPosts.update(userPosts=>userPosts.reverse())
+
             }
           })
 
@@ -54,7 +58,7 @@ export class ProfileComponent implements OnInit {
 
 
 
-  changeImage(e: Event) {
+  changeImageProfile(e: Event) {
     let input = e.target as HTMLInputElement
 
     if (input.files && input.files.length > 0) {
@@ -109,4 +113,66 @@ changeImgApi(formData:FormData){
 
 
 
+
+
+  submetEditPOst(postId: string | null) {
+    if (!postId) {
+      return;
+    }
+
+    this.postService.GetSinglePosts(postId).subscribe({
+      next: (OnePost) => {
+        this.allUserPosts.update(posts =>
+          posts.map(existing => existing.id === OnePost.post.id ? { ...existing, ...OnePost.post } : existing)
+        );
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+
+
+
+
+  submetDeletePOst(post: Post) {
+
+    this.allUserPosts.update(posts =>
+      posts.filter(existing => existing.id !== post.id)
+    );
+
+  }
+
+
+submetPOst(e:boolean){
+      if (e) {
+
+            this.profileDataService.getProfileData().subscribe({
+      next: (res) => {
+
+
+          this.postService.GetUserPosts(res.user._id).subscribe({
+            next:(res)=>{
+
+              console.log(res);
+              this.allUserPosts.update(posts => [res.posts.at(-1)!, ...posts]);
+
+            }
+          })
+
+
+      }
+    })
+        
+
+      }
+        e = false;
+
+}
+
+
+ngOnDestroy(): void {
+
+      this.iamHere.set(false)
+
+}
 }

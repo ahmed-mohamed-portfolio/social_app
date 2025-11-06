@@ -1,4 +1,7 @@
-<section class="w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] bg-white m-8 mb-3.5  p-5 mx-auto rounded-[10px]">
+
+<section class=" bg-white m-8 mb-3.5  p-5 mx-auto rounded-[10px]"
+  [class]="inProfile() ? 'w-full' : 'w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%]'"
+>
 
     <div class="card  w-full">
         <input (click)="showDialog()" label="Show" readonly class="w-full rounded-3xl cursor-pointer" type="text"

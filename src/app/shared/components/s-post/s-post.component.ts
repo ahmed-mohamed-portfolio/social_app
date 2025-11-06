@@ -55,6 +55,8 @@ export class SPostComponent implements OnInit {
 
   private toastrService=inject(ToastrService)
 
+  inProfile = input<boolean>(false);
+
 
   ngOnInit() {
 

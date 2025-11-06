@@ -20,22 +20,21 @@ import { SkeletonCardComponent } from "../../shared/components/skeleton-card/ske
 
 export class TimelineComponent implements OnInit {
 
-
-
   allPosts: WritableSignal<Post[]> = signal([]);
   pageNumber: WritableSignal<number> = signal(0);
   lastpagePostNum: WritableSignal<number> = signal(0);
   private readonly postService = inject(PostService);
-  private toastrService = inject(ToastrService)
-  
+  private toastrService = inject(ToastrService);
+
   isLoading = signal(false);
   loader = signal(false);
 
+  
 
 
   ngOnInit(): void {
 
-    this.getLenthAndFirstGetAllPosts()
+    this.getLenthAndFirstGetAllPosts();
 
   }
 
@@ -49,7 +48,7 @@ export class TimelineComponent implements OnInit {
         this.getAllPosts();
       },
       error: (err) => {
-        this.toastrService.error(err.message,err.name);
+        this.toastrService.error(err.message, err.name);
       }
     })
   }
@@ -58,23 +57,23 @@ export class TimelineComponent implements OnInit {
 
 
   getAllPosts() {
-    
+
     this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
       next: (res) => {
 
         this.allPosts.update(posts => [...posts, ...res.posts.reverse()]);
         this.isLoading.set(false);
-        this.loader.set(false)
+        this.loader.set(false);
 
-        if(res.posts.length==1){
-              this.pageNumber.update(v => v - 1);
-              this.getAllPosts();
+        if (res.posts.length == 1) {
+          this.pageNumber.update(v => v - 1);
+          this.getAllPosts();
         }
 
       },
-      error: (err) => {        
-        this.toastrService.error(err.message,err.name)
+      error: (err) => {
+        this.toastrService.error(err.message, err.name);
       }
     })
 
@@ -84,7 +83,7 @@ export class TimelineComponent implements OnInit {
 
   onScrollDown() {
 
-    if (this.isLoading() || this.pageNumber()<=1 ) return;
+    if (this.isLoading() || this.pageNumber() <= 1) return;
 
     this.isLoading.set(true);
     this.pageNumber.update(v => v - 1);
@@ -93,34 +92,34 @@ export class TimelineComponent implements OnInit {
   }
 
 
-  
+
 
   submetPOst(e: boolean) {
 
     if (e) {
 
-      
-    this.postService.GetAllPostsInfo().subscribe({
-      next: (res) => {
 
-      
-      this.postService.GetAllPosts(res.paginationInfo.numberOfPages).subscribe({
-        next: (req) => {
+      this.postService.GetAllPostsInfo().subscribe({
+        next: (res) => {
 
-          console.log(req);
-          this.allPosts.update(posts => [req.posts.at(-1)!,...posts]);
+
+          this.postService.GetAllPosts(res.paginationInfo.numberOfPages).subscribe({
+            next: (res) => {
+
+              console.log(res);
+              this.allPosts.update(posts => [res.posts.at(-1)!, ...posts]);
+
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          })
 
         },
         error: (err) => {
           console.log(err);
         }
       })
-
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
 
       e = false;
     }
@@ -137,9 +136,9 @@ export class TimelineComponent implements OnInit {
     }
 
     this.postService.GetSinglePosts(postId).subscribe({
-      next: ( OnePost ) => {
+      next: (OnePost) => {
         this.allPosts.update(posts =>
-          posts.map(existing => existing.id === OnePost.post.id ? { ...existing, ...OnePost.post } : existing )
+          posts.map(existing => existing.id === OnePost.post.id ? { ...existing, ...OnePost.post } : existing)
         );
       },
       error: (err) => console.log(err)
@@ -148,15 +147,15 @@ export class TimelineComponent implements OnInit {
 
 
 
-  
 
-  submetDeletePOst(post: Post){
 
-        this.allPosts.update(posts =>
-          posts.filter(existing => existing.id !== post.id)
-        );
- 
-}
+  submetDeletePOst(post: Post) {
+
+    this.allPosts.update(posts =>
+      posts.filter(existing => existing.id !== post.id)
+    );
+
+  }
 
 
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Skeleton } from 'primeng/skeleton';
 
 @Component({
@@ -8,5 +8,8 @@ import { Skeleton } from 'primeng/skeleton';
   styleUrl: './skeleton-card.component.scss'
 })
 export class SkeletonCardComponent {
+  
+    inProfile = input<boolean>(false);
+
 
 }

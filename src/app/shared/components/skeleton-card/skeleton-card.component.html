@@ -1,5 +1,7 @@
 
-    <div class="rounded w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] mx-auto p-6 bg-surface-0 dark:bg-surface-900">
+    <div class="rounded  mx-auto p-6 bg-surface-0 dark:bg-surface-900"
+    [class]="inProfile() ? 'w-full' : 'w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%]'"
+    >
     <div class="flex mb-4">
         <p-skeleton shape="circle" size="4rem" class="mr-2" />
         <div>

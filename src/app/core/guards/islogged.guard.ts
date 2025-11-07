@@ -8,7 +8,7 @@ export const isloggedGuard: CanActivateFn = (route, state) => {
 
   if (localStorage.getItem("token")) {
 
-    return router.parseUrl('/home')
+    return router.parseUrl('/timeLine')
 
   }
 

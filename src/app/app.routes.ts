@@ -27,7 +27,7 @@ export const routes: Routes = [
     ]
 },
 {
-    path:"**",loadComponent:()=>import('../app/features/not-found/not-found.component').then((res)=>res.NotFoundComponent),title:"notFound"
+    path:"**",canActivate: [authGuard],loadComponent:()=>import('../app/features/not-found/not-found.component').then((res)=>res.NotFoundComponent),title:"notFound"
 }
 
 ];

@@ -76,6 +76,7 @@ export class CreatePostComponent implements OnInit {
 
   }
 
+
   submitForm(e: Event): void {
 
     if (this.contents.valid) {
@@ -104,9 +105,9 @@ export class CreatePostComponent implements OnInit {
   addNewPost(formData: FormData) {
 
 
-
         this.postService.createPost(formData).subscribe({
           next: (res) => {
+
             console.log(res);
             this.visible.set(false)
             this.newPost.emit(true);
@@ -122,8 +123,8 @@ export class CreatePostComponent implements OnInit {
         })
 
 
-
-
-
   }
+
+
+
 }

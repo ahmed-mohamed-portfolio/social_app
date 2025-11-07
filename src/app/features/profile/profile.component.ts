@@ -8,6 +8,7 @@ import { Post } from '../../core/interfaces/posts';
 import { SPostComponent } from "../../shared/components/s-post/s-post.component";
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.iamHere.set(true)
     this.getProfileInfos();
+    initFlowbite();
 
   }
 

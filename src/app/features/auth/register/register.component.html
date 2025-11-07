@@ -1,97 +1,100 @@
-<section class="flex justify-center items-center dark:bg-gray-500 sm:my-5  md:py-10 h-dvh">
+<div class="flex flex-col justify-center items-center">
+
+    <img src="/logo.png" alt="" class="mt-5">
+    <section class="flex justify-center items-center dark:bg-gray-500 sm:m-5 sm:mt-0">
 
 
-    <form [formGroup]="registerForm" (ngSubmit)="regsterSubmit()"
-        class="w-[85%] max-w-80  py-5 p-2  md:w-[60%]  lg:w-[80%] lg:max-w-96 xl:max-w-lg ">
+        <form [formGroup]="registerForm" (ngSubmit)="regsterSubmit()"
+            class="w-[85%] max-w-80  py-5 p-2  md:w-[60%]  lg:w-[80%] lg:max-w-96 xl:max-w-lg ">
 
-        <!-- @if(errorMsg().length>0){
-        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <span class="font-medium">Error:</span> {{errorMsg()}}
-        </div>
-        } -->
 
-        <!-- name input -->
-        <app-input [control]="registerForm.get('name')" [typeInput]="'text'" [idInput]="'name'"
-            [placeHolder]="'ahmed mohamed'" [labelInput]="'Name'"></app-input>
+            <!-- name input -->
+            <app-input [control]="registerForm.get('name')" [typeInput]="'text'" [idInput]="'name'"
+                [placeHolder]="'ahmed mohamed'" [labelInput]="'Name'"></app-input>
 
 
 
-        <!-- email input -->
-        <app-input [control]="registerForm.get('email')" [typeInput]="'email'" [idInput]="'email'"
-            [placeHolder]="'ahmed.mohamed@gmail.com'" [labelInput]="'Email address'"></app-input>
+            <!-- email input -->
+            <app-input [control]="registerForm.get('email')" [typeInput]="'email'" [idInput]="'email'"
+                [placeHolder]="'ahmed.mohamed@gmail.com'" [labelInput]="'Email address'"></app-input>
 
 
-        <!-- password input -->
-        <app-input [control]="registerForm.get('password')" [idInput]="'password'" [placeHolder]="'•••••••••'"
-            [labelInput]="'Password'">
+            <!-- password input -->
+            <app-input [control]="registerForm.get('password')" [idInput]="'password'" [placeHolder]="'•••••••••'"
+                [labelInput]="'Password'">
 
-            assword must be at least 8 characters, include uppercase,
-            lowercase, number, and special character.
-        </app-input>
-
-
-        <!-- repassword input -->
-        <app-input [control]="registerForm.get('rePassword')" [idInput]="'rePassword'" [placeHolder]="'•••••••••'"
-            [labelInput]="'confirm Password'">
-        </app-input>
+                assword must be at least 8 characters, include uppercase,
+                lowercase, number, and special character.
+            </app-input>
 
 
-        <!-- date input -->
-           <label for="date" class="text-sm text-gray-900 font-medium" >Date of birth</label>
-           <p-datepicker inputId="date" [showIcon]="true" dateFormat="dd-mm-yy" placeholder="7-10-1994" formControlName="dateOfBirth" />
-        
-        @if(registerForm.get("dateOfBirth")?.touched && registerForm.get("dateOfBirth")?.invalid){
-             <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            <!-- repassword input -->
+            <app-input [control]="registerForm.get('rePassword')" [idInput]="'rePassword'" [placeHolder]="'•••••••••'"
+                [labelInput]="'confirm Password'">
+            </app-input>
+
+
+            <!-- date input -->
+            <label for="date" class="text-sm text-gray-900 font-medium">Date of birth</label>
+            <p-datepicker inputId="date" [showIcon]="true" dateFormat="dd-mm-yy" placeholder="7-10-1994"
+                formControlName="dateOfBirth" />
+
+            @if(registerForm.get("dateOfBirth")?.touched && registerForm.get("dateOfBirth")?.invalid){
+            <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                 role="alert">
-                 <span class="font-medium">Error:</span>   Please choose a valid date (e.g., 7-10-1994).
-             </div>
-        }
-        
-        <!-- gender input -->
-    <div class="mt-4 flex justify-start items-baseline">
-        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100  me-7">
-            Gender
-        </label>
+                <span class="font-medium">Error:</span> Please choose a valid date (e.g., 7-10-1994).
+            </div>
+            }
 
-           <div class="card flex justify-start">
-             <div class="flex flex-wrap gap-4">
-                 <div class="flex items-center">
-                   <p-radiobutton name="Gender" value="male" formControlName="gender" inputId="gender1" />
-                   <label for="gender1" class="ml-2">male</label>
-                 </div>
-                 
-                 <div class="flex items-center">
-                 <p-radiobutton name="Gender" value="female" formControlName="gender" inputId="gender2" />
-                  <label for="gender12" class="ml-2">female</label>
-                 </div>
+            <!-- gender input -->
+            <div class="mt-4 flex justify-start items-baseline">
+                <label class="block text-sm font-medium text-gray-900 dark:text-gray-100  me-7">
+                    Gender
+                </label>
 
+                <div class="card flex justify-start">
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <p-radiobutton name="Gender" value="male" formControlName="gender" inputId="gender1" />
+                            <label for="gender1" class="ml-2">male</label>
+                        </div>
+
+                        <div class="flex items-center">
+                            <p-radiobutton name="Gender" value="female" formControlName="gender" inputId="gender2" />
+                            <label for="gender12" class="ml-2">female</label>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-    </div>
 
-   @if (   registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid)  
-   {
-   <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-        role="alert">
-        <span class="font-medium">Error:</span>     Please choose an gender.
-    </div>
-    }
-
-
-
-        <button type="submit"
-            class="mt-4 cursor-pointer  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
-            @if(isLoading()==true){ <i class="fa-solid fa-sync fa-spin"></i>}
-        </button>
-
-        <p class="mt-4" >Already have an account? <a routerLink="/login" class="cursor-pointer underline text-blue-600">Log In</a></p>
-
-    </form>
+            @if ( registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid)
+            {
+            <div class="mt-0.5 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert">
+                <span class="font-medium">Error:</span> Please choose an gender.
+            </div>
+            }
 
 
 
+            <button type="submit"
+                class="mt-4 cursor-pointer  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
+                @if(isLoading()==true){ <i class="fa-solid fa-sync fa-spin"></i>}
+            </button>
 
-    <img class=" hidden sm:w-[50%] sm:block  md:w-[40%]  lg:w-[30%] xl:w-[25%]  " src="/register.png" alt="">
+            <p class="mt-4">Already have an account? <a routerLink="/login"
+                    class="cursor-pointer underline text-blue-600">Log In</a></p>
+
+        </form>
 
 
-</section>
+
+
+        <img class=" hidden sm:w-[50%] sm:block  md:w-[70%]  lg:w-[90%] xl:w-[90%]  " src="/register.png" alt="">
+
+
+    </section>
+
+
+</div>

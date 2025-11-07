@@ -1,13 +1,8 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
-import { LoginComponent } from './features/auth/login/login.component';
-import { RegisterComponent } from './features/auth/register/register.component';
-import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
 import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component';
-import { TimelineComponent } from './features/timeline/timeline.component';
 import { ProfileComponent } from './features/profile/profile.component';
-import { DetailsPostComponent } from './features/details-post/details-post.component';
-import { NotFoundComponent } from './features/not-found/not-found.component';
+
 
 export const routes: Routes = [
 {
@@ -16,21 +11,21 @@ export const routes: Routes = [
 ,
 {
     path:"" ,component:AuthLayoutComponent,children:[
-        { path:"login",component:LoginComponent,title:"login" },
-        { path:"register",component:RegisterComponent,title:"register" },
+        { path:"login",loadComponent:()=>import('../app/features/auth/login/login.component').then((res)=>res.LoginComponent),title:"login" },
+        { path:"register",loadComponent:()=>import('../app/features/auth/register/register.component').then((res)=>res.RegisterComponent),title:"register" },
     ]
 },
 
 {
     path:"",component:MainLayoutComponent,children:[
-        { path:"timeLine",component:TimelineComponent,title:"timeLine" },
+        { path:"timeLine",loadComponent:()=>import('../app/features/timeline/timeline.component').then((res)=>res.TimelineComponent),title:"timeLine" },
         { path:"profile",component:ProfileComponent,title:"profile" },
-        { path:"details/:id",component:DetailsPostComponent,title:"post details" },
-        { path:"changePassword",component:ChangePasswordComponent,title:"changePassword" },
+        { path:"details/:id",loadComponent:()=>import('../app/features/details-post/details-post.component').then((res)=>res.DetailsPostComponent),title:"post details" },
+        { path:"changePassword",loadComponent:()=>import('../app/features/auth/change-password/change-password.component').then((res)=>res.ChangePasswordComponent),title:"changePassword" },
     ]
 },
 {
-    path:"**",component:NotFoundComponent,title:"notFound"
+    path:"**",loadComponent:()=>import('../app/features/not-found/not-found.component').then((res)=>res.NotFoundComponent),title:"notFound"
 }
 
 ];

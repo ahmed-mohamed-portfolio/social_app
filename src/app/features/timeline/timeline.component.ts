@@ -7,11 +7,13 @@ import { Post } from '../../core/interfaces/posts';
 import { PaginatorModule } from 'primeng/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
+import { initFlowbite } from 'flowbite';
+import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 
 
 @Component({
   selector: 'app-timeline',
-  imports: [CreatePostComponent, SPostComponent, PaginatorModule, InfiniteScrollDirective, SkeletonCardComponent],
+  imports: [CreatePostComponent, SPostComponent, PaginatorModule, InfiniteScrollDirective, SkeletonCardComponent, NavbarComponent],
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss',
 
@@ -33,7 +35,8 @@ export class TimelineComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+       initFlowbite();
+   
     this.getLenthAndFirstGetAllPosts();
 
   }

@@ -3,10 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../shared/components/s-post/services/post.service';
 import { SPostComponent } from '../../shared/components/s-post/s-post.component';
 import { Post } from '../../core/interfaces/posts';
+import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-details-post',
-  imports: [SPostComponent],
+  imports: [SPostComponent, NavbarComponent],
   templateUrl: './details-post.component.html',
   styleUrl: './details-post.component.scss'
 })

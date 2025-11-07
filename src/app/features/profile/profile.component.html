@@ -1,8 +1,12 @@
+<app-navbar></app-navbar>
+
+
+
 @if(userData()){
 
-<div class="grid grid-cols-12 m-3 gap-x-5 ">
-    
-    <div class="col-span-5  w-full sticky top-0 self-start pt-6">
+<div class="grid grid-cols-12 m-3 gap-x-5 lg:gap-x-10 md:mx-16 lg:mx-52">
+
+    <div class="col-span-12 sm:col-span-4  w-full sm:sticky top-0 self-start pt-6">
 
         <div class="relative">
             <img [src]="url()||userData()?.user?.photo" class="rounded-full" alt="">
@@ -28,26 +32,30 @@
 
         <div class="mt-4 text-[1rem] text-blue-900 font-semibold flex-col">
             <p class="text-center text-2xl mb-2">{{userData()?.user?.name}}</p>
-            <p> <i class="pi pi-envelope" style="font-size: 1rem"></i> {{userData()?.user?.email}}</p>
-            <p> <i class="pi pi-calendar" style="font-size: 1rem"></i> {{userData()?.user?.dateOfBirth | date }}</p>
-            <p> <i class="pi pi-calendar-plus" style="font-size: 1rem"></i> {{userData()?.user?.createdAt | date }}</p>
-            <p> <i class="pi pi-user" style="font-size: 1rem"></i> {{userData()?.user?.gender}}</p>
+            <div class="flex flex-wrap gap-3 justify-center items-center sm:flex-col sm:items-start lg:flex-row lg:justify-center lg:items-center ">
+                <p> <i class="pi pi-envelope" style="font-size: 1rem"></i> {{userData()?.user?.email}}</p>
+                <p> <i class="pi pi-calendar" style="font-size: 1rem"></i> {{userData()?.user?.dateOfBirth | date }}</p>
+                <p> <i class="pi pi-calendar-plus" style="font-size: 1rem"></i> {{userData()?.user?.createdAt | date }}
+                </p>
+                <p> <i class="pi pi-user" style="font-size: 1rem"></i> {{userData()?.user?.gender}}</p>
+            </div>
         </div>
 
     </div>
 
 
-    <div class="col-span-7  w-full  ">
+    <div class="col-span-12 sm:col-span-8 w-full mt-10 ">
 
-       <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"  ></app-create-post>
+        <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
 
         @for (post of allUserPosts(); track post.id) {
         @defer (on viewport) {
 
-        <app-s-post (deletePost)="submetDeletePOst($event)"  (newEditPostid)="submetEditPOst($event)"  [post]="post" [inProfile]="iamHere()"></app-s-post>
+        <app-s-post (deletePost)="submetDeletePOst($event)" (newEditPostid)="submetEditPOst($event)" [post]="post"
+            [inProfile]="iamHere()"></app-s-post>
 
         }@placeholder {
-        <app-skeleton-card  [inProfile]="iamHere()" ></app-skeleton-card>
+        <app-skeleton-card [inProfile]="iamHere()"></app-skeleton-card>
         }
         @loading {<div> Loading... </div>}
         @error {<div>Failed to load product details.</div>}

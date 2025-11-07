@@ -9,10 +9,11 @@ import { SPostComponent } from "../../shared/components/s-post/s-post.component"
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { initFlowbite } from 'flowbite';
+import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-profile',
-  imports: [DatePipe, SPostComponent, SkeletonCardComponent, CreatePostComponent],
+  imports: [DatePipe, SPostComponent, SkeletonCardComponent, CreatePostComponent, NavbarComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })

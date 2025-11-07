@@ -7,10 +7,12 @@ import { InputComponent } from "../../../shared/components/input/input.component
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { initFlowbite } from 'flowbite';
+import { NavbarComponent } from "../../../core/layouts/main-layout/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-change-password',
-  imports: [ReactiveFormsModule, InputComponent,FormsModule,RadioButtonModule],
+  imports: [ReactiveFormsModule, InputComponent, FormsModule, RadioButtonModule, NavbarComponent],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
@@ -28,6 +30,7 @@ export class ChangePasswordComponent {
   
 
   ngOnInit(): void {
+    initFlowbite();
 
     this.changePasswordInitForm();
 

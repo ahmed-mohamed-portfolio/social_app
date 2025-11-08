@@ -30,6 +30,7 @@ export class ChangePasswordComponent {
   
 
   ngOnInit(): void {
+    
     initFlowbite();
 
     this.changePasswordInitForm();

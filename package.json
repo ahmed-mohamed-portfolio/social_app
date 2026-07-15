@@ -32,6 +32,7 @@
     "@primeuix/themes": "^1.2.5",
     "@tailwindcss/postcss": "^4.1.15",
     "flowbite": "^3.1.2",
+    "ngx-cookie-service": "^22.0.0",
     "ngx-infinite-scroll": "^20.0.0",
     "ngx-spinner": "^19.0.0",
     "ngx-toastr": "^19.1.0",

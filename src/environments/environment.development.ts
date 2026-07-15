@@ -1,5 +1,3 @@
 export const environment = {
-
-    baseUrl:"https://linked-posts.routemisr.com/"
-
+  baseUrl: 'http://localhost:3000/',
 };

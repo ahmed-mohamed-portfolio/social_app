@@ -1,3 +1,4 @@
+import { LogoutService } from './../../../../services/logout.service';
 import { ProfileDataService } from './../../../../services/profile-data.service';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
@@ -14,7 +15,8 @@ import { User } from '../../../../interfaces/user-info';
 export class NavbarComponent implements OnInit {
 
   private readonly profileDataService = inject(ProfileDataService)
-  private router=inject(Router)
+  private readonly logoutService = inject(LogoutService)
+  private router = inject(Router)
   userInfo: WritableSignal<User> = signal({} as User)
 
   ngOnInit(): void {
@@ -34,9 +36,9 @@ export class NavbarComponent implements OnInit {
   }
 
 
-  signout(){
-    localStorage.removeItem("token")
-    this.router.navigate(['/login'])
+  signout() {
+
+    this.logoutService.signOut('one')
   }
 
 }

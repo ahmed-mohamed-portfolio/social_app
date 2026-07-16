@@ -31,14 +31,15 @@ export class TimelineComponent implements OnInit {
   isLoading = signal(false);
   loader = signal(false);
 
-  
+
 
 
   ngOnInit(): void {
-       initFlowbite();
-   
+    initFlowbite();
+
     this.getLenthAndFirstGetAllPosts();
 
+    this.checkhealth()
   }
 
 
@@ -161,5 +162,16 @@ export class TimelineComponent implements OnInit {
   }
 
 
+  checkhealth() {
+    this.postService.gethealth().subscribe({
+      next: (res) => {
+        console.log(res);
 
+      },
+      error: (err) => {
+        console.log(err);
+
+      }
+    })
+  }
 }

@@ -6,39 +6,45 @@ import { allPosts, Post } from '../../../../core/interfaces/posts';
 import { OnePost } from '../../../../core/interfaces/one-post';
 
 @Injectable({
-  providedIn: 'root'
+   providedIn: 'root'
 })
 
 export class PostService {
-  
-private readonly http = inject(HttpClient) 
 
-createPost(data:object):Observable<any>{
-   return  this.http.post(environment.baseUrl+'posts',data)
-}
+   private readonly http = inject(HttpClient)
 
-editPost(data:object,id:string):Observable<any>{
-   return  this.http.put(environment.baseUrl+`posts/${id}`,data)
-}
+   createPost(data: object): Observable<any> {
+      return this.http.post(environment.baseUrl + 'posts', data)
+   }
 
-GetAllPosts(pageNumber:number):Observable<allPosts>{
-   return  this.http.get<allPosts>(environment.baseUrl+`posts?page=${pageNumber}`)
-}
+   editPost(data: object, id: string): Observable<any> {
+      return this.http.put(environment.baseUrl + `posts/${id}`, data)
+   }
 
-GetAllPostsInfo():Observable<allPosts>{
-   return  this.http.get<allPosts>(environment.baseUrl+`posts`)
-}
+   GetAllPosts(pageNumber: number): Observable<allPosts> {
+      return this.http.get<allPosts>(environment.baseUrl + `posts?page=${pageNumber}`)
+   }
 
-GetSinglePosts(id:string|null):Observable<OnePost>{
-   return  this.http.get<OnePost>(environment.baseUrl+`posts/${id}`)
-}
+   GetAllPostsInfo(): Observable<allPosts> {
+      return this.http.get<allPosts>(environment.baseUrl + `posts`)
+   }
 
-GetUserPosts(id:string):Observable<any>{
-   return  this.http.get(environment.baseUrl+`users/${id}/posts`)
-}
+   GetSinglePosts(id: string | null): Observable<OnePost> {
+      return this.http.get<OnePost>(environment.baseUrl + `posts/${id}`)
+   }
 
-deletePost(id:string):Observable<any>{
-   return  this.http.delete(environment.baseUrl+`posts/${id}`)
-}
+   GetUserPosts(id: string): Observable<any> {
+      return this.http.get(environment.baseUrl + `users/${id}/posts`)
+   }
+
+   deletePost(id: string): Observable<any> {
+      return this.http.delete(environment.baseUrl + `posts/${id}`)
+   }
+
+
+   gethealth() {
+      return this.http.get(environment.baseUrl + `check-health`)
+
+   }
 
 }

@@ -2,6 +2,7 @@ import { inject, Injectable, REQUEST } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
+import { NewToken } from '../interfaces/new-token';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,16 @@ export class AuthService {
       withCredentials: true,
     });
 
+
+  }
+
+
+
+
+  generateAccessTokenByRefreshToken(): Observable<NewToken> {
+
+
+    return this.http.get<NewToken>(environment.baseUrl + 'users/generate-access-token');
 
   }
 }

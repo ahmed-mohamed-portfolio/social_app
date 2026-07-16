@@ -10,6 +10,7 @@ import { provideToastr } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { loaderInterceptor } from './core/interceptors/loader.interceptor';
 import { CookieService } from 'ngx-cookie-service';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -25,7 +26,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura
       }
     }),
-    provideHttpClient(withFetch(), withInterceptors([headerInterceptor, loaderInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([headerInterceptor, loaderInterceptor, errorInterceptor])),
     provideToastr(),
     importProvidersFrom(NgxSpinnerModule, CookieService)
 

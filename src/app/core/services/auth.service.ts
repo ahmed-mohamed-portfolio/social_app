@@ -18,7 +18,7 @@ export class AuthService {
     const cookieHeader = request?.headers.get('cookie') ?? '';
 
 
-    return this.http.get<{ auth: boolean }>(environment.baseUrl + 'get-cookie', {
+    return this.http.get<{ auth: boolean }>(environment.baseUrl + '/get-cookie', {
       headers: cookieHeader ? { cookie: cookieHeader } : undefined,
       withCredentials: true,
     });

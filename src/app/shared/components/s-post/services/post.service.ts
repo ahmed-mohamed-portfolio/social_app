@@ -43,7 +43,7 @@ export class PostService {
 
 
    gethealth() {
-      return this.http.get(environment.baseUrl + `check-health`)
+      return this.http.get(environment.baseUrl + `/check-health`)
 
    }
 

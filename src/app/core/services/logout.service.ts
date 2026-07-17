@@ -67,11 +67,11 @@ export class LogoutService {
   }
 
   logOutFromAllDevices(): Observable<any> {
-    return this.http.patch(environment.baseUrl + 'users/logout-from-all-devices', {})
+    return this.http.patch(environment.baseUrl + '/users/logout-from-all-devices', {})
   }
 
   logOutFromTHisDevice(): Observable<any> {
-    return this.http.post(environment.baseUrl + 'users/logout', {})
+    return this.http.post(environment.baseUrl + '/users/logout', {})
   }
 
 }

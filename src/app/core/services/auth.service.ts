@@ -32,7 +32,7 @@ export class AuthService {
   generateAccessTokenByRefreshToken(): Observable<NewToken> {
 
 
-    return this.http.get<NewToken>(environment.baseUrl + 'users/generate-access-token');
+    return this.http.get<NewToken>(environment.baseUrl + '/users/generate-access-token');
 
   }
 }

@@ -156,7 +156,7 @@ export class LoginComponent {
     google.accounts.id.initialize({
       client_id: '454721329331-ieb8vd87r8mlk8bjf4p60ogm0n5biljd.apps.googleusercontent.com',
       ux_mode: 'redirect',
-      login_uri: `${environment.baseUrl}users/signup/gmail`,
+      login_uri: `${environment.baseUrl}/users/signup/gmail`,
       context: 'signup',
     });
 

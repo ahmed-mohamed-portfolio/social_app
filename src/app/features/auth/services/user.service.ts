@@ -10,11 +10,11 @@ export class UserService {
   private readonly http = inject(HttpClient);
 
   signUp(data: object): Observable<any> {
-    return this.http.post(environment.baseUrl + 'users/signup', data);
+    return this.http.post(environment.baseUrl + '/users/signup', data);
   }
 
   signIn(data: object): Observable<any> {
-    return this.http.post(environment.baseUrl + 'users/signin', data,
+    return this.http.post(environment.baseUrl + '/users/signin', data,
 
       {
         withCredentials: true
@@ -27,6 +27,6 @@ export class UserService {
   }
 
   verifyEmail(data: object): Observable<any> {
-    return this.http.post(environment.baseUrl + 'users/verify', data);
+    return this.http.post(environment.baseUrl + '/users/verify', data);
   }
 }

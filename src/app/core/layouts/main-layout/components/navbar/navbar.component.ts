@@ -1,6 +1,6 @@
 import { LogoutService } from './../../../../services/logout.service';
 import { ProfileDataService } from './../../../../services/profile-data.service';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { Router, RouterLink } from "@angular/router";
 import { IUser, User } from '../../../../interfaces/user-info';
@@ -12,7 +12,7 @@ import { IUser, User } from '../../../../interfaces/user-info';
   styleUrl: './navbar.component.scss'
 })
 
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit {
 
   private readonly profileDataService = inject(ProfileDataService)
   private readonly logoutService = inject(LogoutService)
@@ -21,9 +21,12 @@ export class NavbarComponent implements OnInit {
   backendUrlStatic: string = 'http://localhost:3000/uploads/'
 
   ngOnInit(): void {
-    initFlowbite();
 
     this.getProfileInfos()
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => initFlowbite());
   }
 
   getProfileInfos() {

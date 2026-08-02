@@ -16,7 +16,9 @@
         <span class="sr-only">Open user menu</span>
         <img
           class="w-10 h-10 rounded-full object-cover aspect-square"
-          src="{{ backendUrlStatic + userInfo().profilePic }}"
+          [src]="
+            userInfo().profilePic ? backendUrlStatic + userInfo().profilePic : '/images/profile.png'
+          "
           alt="user photo"
         />
       </button>

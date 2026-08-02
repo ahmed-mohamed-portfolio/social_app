@@ -5,7 +5,11 @@
     <div class="col-span-12 sm:col-span-4 w-full sm:sticky top-0 self-start pt-6">
       <div class="relative w-full aspect-square">
         <img
-          [src]="url() || backendUrlStatic + userData()?.data?.profilePic"
+          [src]="
+            url() || userData()?.data?.profilePic
+              ? backendUrlStatic + userData()?.data?.profilePic
+              : '/images/profile.png'
+          "
           class="w-full h-full rounded-full object-cover"
           alt="profile owner image"
         />

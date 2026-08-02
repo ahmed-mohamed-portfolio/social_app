@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../../environments/environment.development';
+import { FcmService } from '../../../core/services/fcm.service';
 
 declare const google: any;
 
@@ -40,11 +41,35 @@ export class LoginComponent {
   private platformId = inject(PLATFORM_ID);
 
 
+  //for notification from backend by firebase after login
+  protected readonly token = signal('');
+
+  constructor(private readonly fcmService: FcmService) { }
+
   ngOnInit(): void {
     this.loginInitForm();
     this.handleGoogleRedirectError();
 
+
+    this.fcmService.listenForForegroundMessages().catch((error: unknown) => {
+      console.error(error);
+    });
+
+    this.getFcmToken()
   }
+
+  //for notification from backend by firebase after login
+  protected async getFcmToken(): Promise<void> {
+
+    try {
+      const token = await this.fcmService.requestToken();
+      console.log('FCM token:', token);
+      this.token.set(token);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
 
 
@@ -58,7 +83,8 @@ export class LoginComponent {
 
     this.loginForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/)]]
+      password: [null, [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/)]],
+      FCM: [this.token()]
     })
 
   }
@@ -68,8 +94,8 @@ export class LoginComponent {
   loginSubmit() {
 
     if (this.loginForm.valid) {
-
       this.logIn();
+
     } else {
       this.loginForm.markAllAsTouched()
     }
@@ -80,6 +106,8 @@ export class LoginComponent {
 
   //send login data to api and loader
   logIn() {
+
+    this.loginForm.get('FCM')?.setValue(this.token());
 
     this.subscribe.unsubscribe();
     this.subscribe = this.path.signIn(this.loginForm.value).subscribe(

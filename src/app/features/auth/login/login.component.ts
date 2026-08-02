@@ -6,7 +6,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../../environments/environment.development';
 import { FcmService } from '../../../core/services/fcm.service';
@@ -21,7 +20,7 @@ declare const google: any;
 })
 
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
 
   flag: boolean = true;

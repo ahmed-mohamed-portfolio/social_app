@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {environment} from '../../../environments/environment.development'
+import { environment } from '../../../environments/environment.development'
 import { UserInfo } from '../interfaces/user-info';
 
 @Injectable({
@@ -10,12 +10,12 @@ import { UserInfo } from '../interfaces/user-info';
 export class ProfileDataService {
   private readonly http = inject(HttpClient)
 
-  getProfileData():Observable<UserInfo>{
-     return this.http.get<UserInfo>(environment.baseUrl + 'users/profile-data')
+  getProfileData(): Observable<UserInfo> {
+    return this.http.get<UserInfo>(environment.baseUrl + '/users/get-user-profile')
   }
 
-  uploadProfilePhoto(photo:FormData):Observable<any>{
-    return this.http.put(environment.baseUrl + 'users/upload-photo',photo)
+  uploadProfilePhoto(attachment: FormData): Observable<any> {
+    return this.http.patch(environment.baseUrl + '/users/profile-image', attachment)
   }
 
 }

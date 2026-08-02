@@ -23,7 +23,7 @@ export class UserService {
   }
 
   changePassword(data: object): Observable<any> {
-    return this.http.patch(environment.baseUrl + 'users/change-password', data);
+    return this.http.patch(environment.baseUrl + '/users/change-password', data);
   }
 
   verifyEmail(data: object): Observable<any> {

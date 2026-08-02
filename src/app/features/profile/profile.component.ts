@@ -25,11 +25,13 @@ export class ProfileComponent implements OnInit {
   saveFile: WritableSignal<File | null> = signal(null)
   profileDataService = inject(ProfileDataService)
   url: WritableSignal<string | null> = signal(null);
-  toastrService=inject(ToastrService)
-  postService=inject(PostService)
-  iamHere:WritableSignal<boolean>=signal(false)
-  allUserPosts:WritableSignal<Post[]>=signal([])
-  
+  toastrService = inject(ToastrService)
+  postService = inject(PostService)
+  iamHere: WritableSignal<boolean> = signal(false)
+  allUserPosts: WritableSignal<Post[]> = signal([])
+  backendUrlStatic: string = 'http://localhost:3000/uploads/'
+
+
   ngOnInit(): void {
     this.iamHere.set(true)
     this.getProfileInfos();
@@ -37,29 +39,29 @@ export class ProfileComponent implements OnInit {
 
   }
 
-     // there is problem in backend so i cant get baram page i can get limit only
+  // there is problem in backend so i cant get baram page i can get limit only
   getProfileInfos() {
     this.profileDataService.getProfileData().subscribe({
       next: (res) => {
+        console.log("profile res", res);
+
         this.userData.set(res)
 
 
-          this.postService.GetUserPosts(res.user._id).subscribe({
-            next:(res)=>{
+        this.postService.GetUserPosts(res.data._id).subscribe({
+          next: (res) => {
 
-             console.log("all user posts",res);
-             this.allUserPosts.set(res.posts)
-             this.allUserPosts.update(userPosts=>userPosts.reverse())
+            console.log("all user posts", res);
+            this.allUserPosts.set(res.posts)
+            this.allUserPosts.update(userPosts => userPosts.reverse())
 
-            }
-          })
+          }
+        })
 
 
       }
     })
   }
-
-
 
   changeImageProfile(e: Event) {
     let input = e.target as HTMLInputElement
@@ -68,55 +70,50 @@ export class ProfileComponent implements OnInit {
       this.saveFile.set(input.files[0])
 
 
-          // https://www.youtube.com/watch?v=Z5Yf0xJVXYI
+      // https://www.youtube.com/watch?v=Z5Yf0xJVXYI
       const reader = new FileReader()
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
-      this.url.set(event.target.result)
+        this.url.set(event.target.result)
       }
     }
 
-    
-
-      const formData = new FormData()
-      let file = this.saveFile()
-
-      if (file) {
-        formData.append('photo', file, file.name)
-      }
-
-      this.changeImgApi(formData);
 
 
-    
+    const formData = new FormData()
+    let file = this.saveFile()
+
+    if (file) {
+      formData.append('attachment', file, file.name)
+    }
+
+    this.changeImgApi(formData);
+
+
+
 
   }
 
-changeImgApi(formData:FormData){
+  changeImgApi(formData: FormData) {
 
-      this.profileDataService.uploadProfilePhoto(formData).subscribe({
+    this.profileDataService.uploadProfilePhoto(formData).subscribe({
       next: (res) => {
         console.log(res);
         this.toastrService.success(res.message)
 
 
-      this.saveFile.set(null);
+        this.saveFile.set(null);
 
       },
-          error:(err)=>{
-          console.log(err);
-          this.toastrService.error(err.message)
+      error: (err) => {
+        console.log(err);
+        this.toastrService.error(err.message)
 
-        }
+      }
     })
 
 
-}
-  
-
-
-
-
+  }
 
   submetEditPOst(postId: string | null) {
     if (!postId) {
@@ -133,10 +130,6 @@ changeImgApi(formData:FormData){
     });
   }
 
-
-
-
-
   submetDeletePOst(post: Post) {
 
     this.allUserPosts.update(posts =>
@@ -145,16 +138,15 @@ changeImgApi(formData:FormData){
 
   }
 
+  submetPOst(e: boolean) {
+    if (e) {
 
-submetPOst(e:boolean){
-      if (e) {
-
-            this.profileDataService.getProfileData().subscribe({
-      next: (res) => {
+      this.profileDataService.getProfileData().subscribe({
+        next: (res) => {
 
 
-          this.postService.GetUserPosts(res.user._id).subscribe({
-            next:(res)=>{
+          this.postService.GetUserPosts(res.data._id).subscribe({
+            next: (res) => {
 
               console.log(res);
               this.allUserPosts.update(posts => [res.posts.at(-1)!, ...posts]);
@@ -163,19 +155,19 @@ submetPOst(e:boolean){
           })
 
 
-      }
-    })
-        
-
-      }
-        e = false;
-
-}
+        }
+      })
 
 
-ngOnDestroy(): void {
+    }
+    e = false;
 
-      this.iamHere.set(false)
+  }
 
-}
+  ngOnDestroy(): void {
+
+    this.iamHere.set(false)
+
+  }
+
 }

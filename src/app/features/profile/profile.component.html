@@ -1,71 +1,91 @@
 <app-navbar></app-navbar>
 
-
-
-@if(userData()){
-
-<div class="grid grid-cols-12 m-3 gap-x-5 lg:gap-x-10 md:mx-16 lg:mx-52">
-
-    <div class="col-span-12 sm:col-span-4  w-full sm:sticky top-0 self-start pt-6">
-
-        <div class="relative">
-            <img [src]="url()||userData()?.user?.photo" class="rounded-full " alt="">
-            <div class="absolute right-0 bottom-[10%] ">
-                <div class="flex items-center justify-center ">
-                    <label for="dropzonefile"
-                        class="flex flex-col items-center justify-center   rounded-full p-1 cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                        <div class="flex flex-col items-center justify-center ">
-                            <svg class="w-8 h-8  text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                            </svg>
-
-                        </div>
-                        <input (change)="changeImageProfile($event)" id="dropzonefile" type="file" class="hidden" />
-                    </label>
-                </div>
-            </div>
+@if (userData()) {
+  <div class="grid grid-cols-12 m-3 gap-x-5 lg:gap-x-10 md:mx-16 lg:mx-52">
+    <div class="col-span-12 sm:col-span-4 w-full sm:sticky top-0 self-start pt-6">
+      <div class="relative w-full aspect-square">
+        <img
+          [src]="url() || backendUrlStatic + userData()?.data?.profilePic"
+          class="w-full h-full rounded-full object-cover"
+          alt="profile owner image"
+        />
+        <div class="absolute right-0 bottom-[10%]">
+          <div class="flex items-center justify-center">
+            <label
+              for="dropzonefile"
+              class="flex flex-col items-center justify-center rounded-full p-1 cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
+            >
+              <div class="flex flex-col items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+              </div>
+              <input
+                (change)="changeImageProfile($event)"
+                id="dropzonefile"
+                type="file"
+                class="hidden"
+              />
+            </label>
+          </div>
         </div>
+      </div>
 
-
-        <div class="mt-4 text-[1rem] text-blue-900 font-semibold flex-col">
-            <p class="text-center text-2xl mb-2">{{userData()?.user?.name}}</p>
-            <div class="flex flex-wrap gap-3 justify-center items-center sm:flex-col sm:items-start lg:flex-row lg:justify-center lg:items-center ">
-                <p> <i class="pi pi-envelope" style="font-size: 1rem"></i> {{userData()?.user?.email}}</p>
-                <p> <i class="pi pi-calendar" style="font-size: 1rem"></i> {{userData()?.user?.dateOfBirth | date }}</p>
-                <p> <i class="pi pi-calendar-plus" style="font-size: 1rem"></i> {{userData()?.user?.createdAt | date }}
-                </p>
-                <p> <i class="pi pi-user" style="font-size: 1rem"></i> {{userData()?.user?.gender}}</p>
-            </div>
+      <div class="mt-4 text-[1rem] text-blue-900 font-semibold flex-col">
+        <p class="text-center text-2xl mb-2">
+          {{ userData()?.data?.firstName }} {{ userData()?.data?.lastName }}
+        </p>
+        <div
+          class="flex flex-wrap gap-3 justify-center items-center sm:flex-col sm:items-start lg:flex-row lg:justify-center lg:items-center"
+        >
+          <p class="flex items-baseline gap-2 break-all">
+            <i class="pi pi-envelope" style="font-size: 1rem"></i>
+            {{ userData()?.data?.email }}
+          </p>
+          <p>
+            <i class="pi pi-calendar" style="font-size: 1rem"></i>
+            {{ userData()?.data?.dateOfBirth | date }}
+          </p>
+          <p>
+            <i class="pi pi-calendar-plus" style="font-size: 1rem"></i>
+            {{ userData()?.data?.createdAt | date }}
+          </p>
+          <p><i class="pi pi-user" style="font-size: 1rem"></i> {{ userData()?.data?.gender }}</p>
         </div>
-
+      </div>
     </div>
 
+    <div class="col-span-12 sm:col-span-8 w-full mt-10">
+      <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
 
-    <div class="col-span-12 sm:col-span-8 w-full mt-10 ">
-
-        <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
-
-        @for (post of allUserPosts(); track post.id) {
+      @for (post of allUserPosts(); track post.id) {
         @defer (on viewport) {
-
-        <app-s-post (deletePost)="submetDeletePOst($event)" (newEditPostid)="submetEditPOst($event)" [post]="post"
-            [inProfile]="iamHere()"></app-s-post>
-
-        }@placeholder {
-        <app-skeleton-card [inProfile]="iamHere()"></app-skeleton-card>
+          <app-s-post
+            (deletePost)="submetDeletePOst($event)"
+            (newEditPostid)="submetEditPOst($event)"
+            [post]="post"
+            [inProfile]="iamHere()"
+          ></app-s-post>
+        } @placeholder {
+          <app-skeleton-card [inProfile]="iamHere()"></app-skeleton-card>
+        } @loading {
+          <div>Loading...</div>
+        } @error {
+          <div>Failed to load product details.</div>
         }
-        @loading {<div> Loading... </div>}
-        @error {<div>Failed to load product details.</div>}
-
-        }
-
+      }
     </div>
-
-
-</div>
-
-
+  </div>
 }

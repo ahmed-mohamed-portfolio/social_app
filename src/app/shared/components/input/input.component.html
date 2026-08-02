@@ -18,7 +18,7 @@
       required
     />
 
-    @if (idInput === 'password' || idInput === 'confirmPassword') {
+    @if (idInput === 'password' || idInput === 'confirmPassword' || idInput === 'rePassword') {
       <span (click)="changeFlag()" class="absolute top-1/4 right-4 cursor-pointer">
         @if (flag) {
           <i class="fas fa-eye"></i>

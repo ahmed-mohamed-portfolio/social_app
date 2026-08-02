@@ -3,7 +3,7 @@ import { ProfileDataService } from './../../../../services/profile-data.service'
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { Router, RouterLink } from "@angular/router";
-import { User } from '../../../../interfaces/user-info';
+import { IUser, User } from '../../../../interfaces/user-info';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +17,8 @@ export class NavbarComponent implements OnInit {
   private readonly profileDataService = inject(ProfileDataService)
   private readonly logoutService = inject(LogoutService)
   private router = inject(Router)
-  userInfo: WritableSignal<User> = signal({} as User)
+  userInfo: WritableSignal<IUser> = signal({} as IUser)
+  backendUrlStatic: string = 'http://localhost:3000/uploads/'
 
   ngOnInit(): void {
     initFlowbite();
@@ -28,9 +29,9 @@ export class NavbarComponent implements OnInit {
   getProfileInfos() {
     this.profileDataService.getProfileData().subscribe({
       next: (res) => {
-        console.log(res);
-        this.userInfo.set(res.user)
-        localStorage.setItem('id', res.user._id)
+        console.log("======", res, '=======');
+        this.userInfo.set(res.data)
+        localStorage.setItem('id', res.data._id)
       }
     })
   }

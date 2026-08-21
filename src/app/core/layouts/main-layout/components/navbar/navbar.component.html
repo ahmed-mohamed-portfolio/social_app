@@ -17,7 +17,11 @@
         <img
           class="w-10 h-10 rounded-full object-cover aspect-square"
           [src]="
-            userInfo().profilePic ? backendUrlStatic + userInfo().profilePic : '/images/profile.png'
+            userInfo().profilePic?.startsWith('http')
+              ? userInfo().profilePic
+              : userInfo().profilePic?.startsWith('SOCIAL_MEDIA_APP')
+                ? backendUrlStatic + userInfo().profilePic
+                : '/images/profile.png'
           "
           alt="user photo"
         />

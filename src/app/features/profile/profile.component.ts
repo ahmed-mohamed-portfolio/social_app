@@ -10,6 +10,7 @@ import { SkeletonCardComponent } from "../../shared/components/skeleton-card/ske
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { initFlowbite } from 'flowbite';
 import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit {
   postService = inject(PostService)
   iamHere: WritableSignal<boolean> = signal(false)
   allUserPosts: WritableSignal<Post[]> = signal([])
-  backendUrlStatic: string = 'http://localhost:3000/uploads/'
+  backendUrlStatic: string = environment.baseUrl + '/uploads/'
 
 
   ngOnInit(): void {

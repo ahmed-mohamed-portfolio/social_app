@@ -35,6 +35,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         console.log("======", res, '=======');
         this.userInfo.set(res.data)
         localStorage.setItem('id', res.data._id)
+        localStorage.setItem('provider', res.data.provider.toString())
+
       }
     })
   }

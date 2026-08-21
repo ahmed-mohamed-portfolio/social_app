@@ -30,7 +30,7 @@ export interface IUser {
   password: string
   gender?: GenderEnum
   role?: RoleEnum
-  provider?: ProviderEnum
+  provider: ProviderEnum
   confirmEmail: boolean
   createdAt?: Date
   updatedAt?: Date

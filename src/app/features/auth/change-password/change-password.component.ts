@@ -1,10 +1,9 @@
 import { ToastrService } from 'ngx-toastr';
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../features/auth/services/user.service';
 import { Router } from '@angular/router';
 import { InputComponent } from "../../../shared/components/input/input.component";
-import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { initFlowbite } from 'flowbite';
@@ -19,22 +18,23 @@ import { NavbarComponent } from "../../../core/layouts/main-layout/components/na
 
 export class ChangePasswordComponent {
 
-  private toastrService =inject(ToastrService)
+  private toastrService = inject(ToastrService)
   private readonly fb = inject(FormBuilder);
   changePassword!: FormGroup
-
+  loginBy: WritableSignal<string | null> = signal('')
 
   //api variables
   private userService: UserService = inject(UserService);
   private route: Router = inject(Router)
-  
+
 
   ngOnInit(): void {
-    
+
     initFlowbite();
 
     this.changePasswordInitForm();
 
+    this.loginBy.set(localStorage.getItem('provider'))
   }
 
   //all data input and validation
@@ -42,14 +42,14 @@ export class ChangePasswordComponent {
 
     this.changePassword = this.fb.group({
 
-      password: [null, [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/)]],
+      password: [null, [Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/)]],
       newPassword: [null, [Validators.required]],
 
     });
 
   }
 
- 
+
 
 
 
@@ -69,7 +69,7 @@ export class ChangePasswordComponent {
 
   //send login data to api and loader
   changePasswordFn() {
-    
+
     this.userService.changePassword(this.changePassword.value).subscribe(
       {
         next: (res) => {

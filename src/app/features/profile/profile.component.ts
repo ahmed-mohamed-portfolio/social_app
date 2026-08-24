@@ -107,8 +107,8 @@ export class ProfileComponent implements OnInit {
 
       },
       error: (err) => {
-        console.log(err);
-        this.toastrService.error(err.message)
+        console.log("error", err);
+        // this.toastrService.error(err.message)
 
       }
     })

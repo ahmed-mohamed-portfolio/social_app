@@ -49,11 +49,11 @@ export class SPostComponent implements OnInit {
 
   localStorageId: WritableSignal<string | null> = signal(null)
 
-  showOnDelete:WritableSignal<boolean>=signal(false)
+  showOnDelete: WritableSignal<boolean> = signal(false)
 
   editPost: WritableSignal<boolean> = signal(false)
 
-  private toastrService=inject(ToastrService)
+  private toastrService = inject(ToastrService)
 
   inProfile = input<boolean>(false);
 
@@ -101,13 +101,13 @@ export class SPostComponent implements OnInit {
 
 
 
-trueShowOnDelete(){
-  this.showOnDelete.set(true)
-}
+  trueShowOnDelete() {
+    this.showOnDelete.set(true)
+  }
 
-falseShowOnDelete(){
-  this.showOnDelete.set(false)
-}
+  falseShowOnDelete() {
+    this.showOnDelete.set(false)
+  }
 
 
   onDelete() {
@@ -115,9 +115,9 @@ falseShowOnDelete(){
     this.postService.deletePost(this.post().id).subscribe({
       next: (res) => {
         this.deletePost.emit(res.post);
-      },error:(err)=>{
+      }, error: (err) => {
         console.log(err);
-        
+
       }
     })
 
@@ -151,8 +151,8 @@ falseShowOnDelete(){
           this.commentControl.reset()
         },
         error: (err) => {
-          console.log(err);
-          this.toastrService.error(err.error.error)
+          console.log("error", err);
+          // this.toastrService.error(err.error.error)
 
         }
       })
@@ -164,10 +164,10 @@ falseShowOnDelete(){
 
 
 
-removeDeletedComment(comment:Comment){
-this.commentsPost.update(comments => comments.filter(existing => existing !== comment))
+  removeDeletedComment(comment: Comment) {
+    this.commentsPost.update(comments => comments.filter(existing => existing !== comment))
 
-}
+  }
 
 
 
@@ -199,7 +199,7 @@ this.commentsPost.update(comments => comments.filter(existing => existing !== co
   url: WritableSignal<string | null> = signal(null);
 
   newEditPostid = output<string>();
-  
+
   deletePost = output<Post>();
 
 

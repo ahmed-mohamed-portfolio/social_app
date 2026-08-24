@@ -105,8 +105,8 @@ export class RegisterComponent implements OnInit {
       },
 
       error: (err) => {
-        console.log(err);
-        this.toastrService.error(err.error.message);
+        console.log("err.error.message", err.error.message);
+        // this.toastrService.error(err.error.message);
         this.errorMsg.set(err.message);
         this.isLoading.set(false);
       },

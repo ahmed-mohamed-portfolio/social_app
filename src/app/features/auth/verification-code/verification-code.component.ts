@@ -61,7 +61,9 @@ export class VerificationCodeComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastrService.error(err.error.message);
+        console.log("err.error.message", err.error.message);
+
+        // this.toastrService.error(err.error.message);
 
         console.log(err.message);
       },

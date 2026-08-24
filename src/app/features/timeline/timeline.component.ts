@@ -52,7 +52,9 @@ export class TimelineComponent implements OnInit {
         this.getAllPosts();
       },
       error: (err) => {
-        this.toastrService.error(err.message, err.name);
+        console.log("err.message", err.message);
+
+        // this.toastrService.error(err.message, err.name);
       }
     })
   }
@@ -77,7 +79,8 @@ export class TimelineComponent implements OnInit {
 
       },
       error: (err) => {
-        this.toastrService.error(err.message, err.name);
+        console.log("err.message", err.message);
+        // this.toastrService.error(err.message, err.name);
       }
     })
 

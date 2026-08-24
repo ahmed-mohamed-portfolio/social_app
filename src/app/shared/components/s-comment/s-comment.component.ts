@@ -18,7 +18,7 @@ import { CommentService } from './services/comment.service';
 })
 export class SCommentComponent {
 
-    
+
     comment: InputSignal<Comment> = input.required();
 
     itemsC: MenuItem[] | undefined;
@@ -30,20 +30,20 @@ export class SCommentComponent {
     toggleCommentEdit: WritableSignal<boolean> = signal(false)
 
     newComment: WritableSignal<string> = signal('')
-    
-    deletedComment=output<Comment>()
+
+    deletedComment = output<Comment>()
 
     localStorageId: WritableSignal<string | null> = signal(null)
 
-    showOnDelete:WritableSignal<boolean>=signal(false)
+    showOnDelete: WritableSignal<boolean> = signal(false)
 
-    private toastrService=inject(ToastrService)
+    private toastrService = inject(ToastrService)
 
 
     ngOnInit() {
 
         console.log(this.comment());
-        
+
         this.localStorageId.set(localStorage.getItem('id'))
 
         initFlowbite();
@@ -79,22 +79,22 @@ export class SCommentComponent {
     onEdit() {
 
         this.toggleCommentEdit.set(true)
-        if(this.newComment()){
+        if (this.newComment()) {
             this.commentControl.setValue(this.newComment())
 
-        }else{
+        } else {
 
             this.commentControl.setValue(this.comment().content)
         }
 
     }
-    
 
-    onDelete(){
+
+    onDelete() {
         this.commentService.deleteComment(this.comment()._id).subscribe({
-            next:(res)=>{
-                  console.log(res);
-                  this.deletedComment.emit(this.comment())
+            next: (res) => {
+                console.log(res);
+                this.deletedComment.emit(this.comment())
             }
         })
     }
@@ -107,7 +107,7 @@ export class SCommentComponent {
 
         this.commentService.updateComment(this.comment()._id, { "content": this.commentControl.value }).subscribe({
             next: (res) => {
-                
+
                 if (res.message == 'success') {
                     this.toggleCommentEdit.set(false)
                     this.commentControl.setValue(res.comment.content)
@@ -116,7 +116,8 @@ export class SCommentComponent {
                 }
 
             }, error: (err) => {
-                this.toastrService.error(err.error.error)
+                console.log("err.error.error", err.error.error);
+                // this.toastrService.error(err.error.error)
             }
         })
 
@@ -124,13 +125,13 @@ export class SCommentComponent {
 
 
 
-trueShowOnDelete(){
-  this.showOnDelete.set(true)
-}
+    trueShowOnDelete() {
+        this.showOnDelete.set(true)
+    }
 
-falseShowOnDelete(){
-  this.showOnDelete.set(false)
-}
+    falseShowOnDelete() {
+        this.showOnDelete.set(false)
+    }
 
 
 }

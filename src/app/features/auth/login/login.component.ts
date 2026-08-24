@@ -123,7 +123,9 @@ export class LoginComponent implements OnInit {
 
             }
           } else {
-            this.toastrService.error("email not verified")
+            console.log("email not verified");
+
+            // this.toastrService.error("email not verified")
 
           }
 

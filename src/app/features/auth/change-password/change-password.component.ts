@@ -84,8 +84,8 @@ export class ChangePasswordComponent {
         },
 
         error: (err) => {
-          console.log(err);
-          this.toastrService.error(err.error.error)
+          console.log("err.error.error", err.error.error);
+          // this.toastrService.error(err.error.error)
         },
 
       })

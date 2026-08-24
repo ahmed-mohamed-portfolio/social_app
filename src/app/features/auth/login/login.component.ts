@@ -131,7 +131,7 @@ export class LoginComponent implements OnInit {
 
         error: (err) => {
           console.log(err);
-          this.toastrService.error("wrong email or password")
+          // this.toastrService.error("wrong email or password")
 
         },
 

@@ -62,6 +62,10 @@
             <i class="pi pi-envelope" style="font-size: 1rem"></i>
             {{ userData()?.data?.email }}
           </p>
+          <p class="flex items-baseline gap-2 break-all">
+            <i class="pi pi-phone" style="font-size: 1rem"></i>
+            {{ userData()?.data?.phone }}
+          </p>
           <p>
             <i class="pi pi-calendar" style="font-size: 1rem"></i>
             {{ userData()?.data?.dateOfBirth | date }}

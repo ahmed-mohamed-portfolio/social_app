@@ -24,6 +24,14 @@
         [labelInput]="'Email address'"
       ></app-input>
 
+      <!-- phone input -->
+      <app-input
+        [control]="registerForm.get('phone')"
+        [typeInput]="'tel'"
+        [idInput]="'phone'"
+        [placeHolder]="'01003003608'"
+        [labelInput]="'phone number'"
+      ></app-input>
       <!-- password input -->
       <app-input
         [control]="registerForm.get('password')"

@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
-import { allPosts, Post } from '../../../../core/interfaces/posts';
-import { OnePost } from '../../../../core/interfaces/one-post';
+import { Doc, postsReturn, singlePost, userPosts } from '../../../../core/interfaces/posts';
+import { DeletePostRes } from '../interfaces/delete-post-res';
+
 
 @Injectable({
    providedIn: 'root'
@@ -14,37 +15,29 @@ export class PostService {
    private readonly http = inject(HttpClient)
 
    createPost(data: object): Observable<any> {
-      return this.http.post(environment.baseUrl + 'posts', data)
+      return this.http.post(environment.baseUrl + '/post', data)
+   }
+
+   GetAllPosts(pageNumber: number): Observable<postsReturn> {
+      return this.http.get<postsReturn>(environment.baseUrl + `/post?page=${pageNumber}`)
    }
 
    editPost(data: object, id: string): Observable<any> {
-      return this.http.put(environment.baseUrl + `posts/${id}`, data)
+      console.log("dataEdit", data);
+
+      return this.http.patch(environment.baseUrl + `/post/${id}`, data)
    }
 
-   GetAllPosts(pageNumber: number): Observable<allPosts> {
-      return this.http.get<allPosts>(environment.baseUrl + `posts?page=${pageNumber}`)
+   GetSinglePosts(id: string | null): Observable<singlePost> {
+      return this.http.get<singlePost>(environment.baseUrl + `/post/${id}`)
    }
 
-   GetAllPostsInfo(): Observable<allPosts> {
-      return this.http.get<allPosts>(environment.baseUrl + `posts`)
+   GetUserPosts(userId: string): Observable<userPosts> {
+      return this.http.get<userPosts>(environment.baseUrl + `/post/user/${userId}`)
    }
 
-   GetSinglePosts(id: string | null): Observable<OnePost> {
-      return this.http.get<OnePost>(environment.baseUrl + `posts/${id}`)
-   }
-
-   GetUserPosts(id: string): Observable<any> {
-      return this.http.get(environment.baseUrl + `users/${id}/posts`)
-   }
-
-   deletePost(id: string): Observable<any> {
-      return this.http.delete(environment.baseUrl + `posts/${id}`)
-   }
-
-
-   gethealth() {
-      return this.http.get(environment.baseUrl + `/check-health`)
-
+   deletePost(id: string): Observable<DeletePostRes> {
+      return this.http.delete<DeletePostRes>(environment.baseUrl + `/post/${id}`)
    }
 
 }

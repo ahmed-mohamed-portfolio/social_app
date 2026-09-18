@@ -1,39 +1,30 @@
 <app-navbar></app-navbar>
 
+<app-create-post (newPost)="submetPOst($event)"></app-create-post>
 
-<app-create-post (newPost)="submetPOst($event)" ></app-create-post>
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="0.1"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScrollDown()"
+>
+  @for (post of allPosts(); track post._id) {
+    @defer (on viewport) {
+      <app-s-post
+        (deletePost)="submetDeletePOst($event)"
+        (newEditPostid)="submetEditPOst($event)"
+        [post]="post"
+      ></app-s-post>
+    } @placeholder {
+      <app-skeleton-card></app-skeleton-card>
+    } @loading {
+      <app-skeleton-card></app-skeleton-card>
+    } @error {
+      <div>Failed to load product details.</div>
+    }
+  }
 
-
-<div infiniteScroll 
-[infiniteScrollDistance]="0.1"
-[infiniteScrollThrottle]="300" 
-(scrolled)="onScrollDown()"
- >
-
-
- 
-@for (post of allPosts(); track post.id) {
-@defer (on viewport) {
-
-<app-s-post (deletePost)="submetDeletePOst($event)"  (newEditPostid)="submetEditPOst($event)" [post]="post"></app-s-post>
-
-}@placeholder {
+  @if (loader()) {
     <app-skeleton-card></app-skeleton-card>
-}
-@loading { <app-skeleton-card></app-skeleton-card> }
-@error {<div>Failed to load product details.</div>} 
-
-}
-
-
-
-@if (loader()) {
-
-       <app-skeleton-card></app-skeleton-card>
-}
-
+  }
 </div>
-
-
-
-

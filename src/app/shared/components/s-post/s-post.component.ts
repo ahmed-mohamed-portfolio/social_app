@@ -1,23 +1,20 @@
-import { ToastrService } from 'ngx-toastr';
-
 import { Component, inject, input, InputSignal, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
-import { Post } from '../../../core/interfaces/posts';
+import { Comments, Doc } from '../../../core/interfaces/posts';
 import { DatePipe } from '@angular/common';
 import { SCommentComponent } from "../s-comment/s-comment.component";
 import { initFlowbite } from 'flowbite';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentService } from '../s-comment/services/comment.service';
-import { Comment } from '../../../../app/core/interfaces/posts';
 import { RouterLink } from "@angular/router";
-
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { PostService } from '../s-post/services/post.service';
+import { environment } from '../../../../environments/environment.development';
 
 
 
@@ -36,12 +33,12 @@ export class SPostComponent implements OnInit {
 
   commentControl: FormControl = new FormControl(null, [Validators.required])
 
-  post: InputSignal<Post> = input({} as Post)
+  post: InputSignal<Doc> = input({} as Doc)
   // post:InputSignal<Post>=input.required()
 
   items: MenuItem[] | undefined;
 
-  commentsPost: WritableSignal<Comment[]> = signal([])
+  commentsPost: WritableSignal<Comments[]> = signal([])
 
   showComments: WritableSignal<boolean> = signal(false)
 
@@ -51,18 +48,20 @@ export class SPostComponent implements OnInit {
 
   showOnDelete: WritableSignal<boolean> = signal(false)
 
-  editPost: WritableSignal<boolean> = signal(false)
-
-  private toastrService = inject(ToastrService)
+  // editPost: WritableSignal<boolean> = signal(false)
 
   inProfile = input<boolean>(false);
+
+  backendUrlStatic: string = environment.baseUrl + '/uploads/'
+  removeFiles: string[] = [];
 
 
   ngOnInit() {
 
     this.localStorageId.set(localStorage.getItem('id'))
-    this.commentsPost.set(this.post().comments)
+    this.commentsPost.set(this.post().comments ?? [])
 
+    console.log("this.commentsPost", this.commentsPost());
 
     initFlowbite();
 
@@ -87,19 +86,19 @@ export class SPostComponent implements OnInit {
     ];
   }
 
-
-
-
   onEdit() {
 
-    this.contents.setValue(this.post().body ?? '');
-    this.url.set(this.post().image ?? null);
-    //this.saveFile.set(null);               
+    this.contents.setValue(this.post().content ?? '');
+
+    this.url.set(this.post().attachments[0] ?? null);
+
+
+    this.saveFile.set(null);
+    this.removeFiles = [];
+
     this.showDialog();
 
   }
-
-
 
   trueShowOnDelete() {
     this.showOnDelete.set(true)
@@ -109,12 +108,13 @@ export class SPostComponent implements OnInit {
     this.showOnDelete.set(false)
   }
 
-
   onDelete() {
 
     this.postService.deletePost(this.post().id).subscribe({
       next: (res) => {
-        this.deletePost.emit(res.post);
+        console.log("ressss delete", res);
+
+        this.deletePost.emit(res.data);
       }, error: (err) => {
         console.log(err);
 
@@ -122,7 +122,6 @@ export class SPostComponent implements OnInit {
     })
 
   }
-
 
   toggleComments() {
 
@@ -132,7 +131,6 @@ export class SPostComponent implements OnInit {
 
   }
 
-
   commentSubmit(e: Event) {
 
     e.preventDefault();
@@ -141,30 +139,26 @@ export class SPostComponent implements OnInit {
 
       let commentData = {
         content: this.commentControl.value,
-        post: this.post()._id
       }
 
 
-      this.commentService.createComment(commentData).subscribe({
+      this.commentService.createComment(commentData, this.post()._id).subscribe({
         next: (res) => {
-          this.commentsPost.set(res.comments)
+          console.log("res commentService.createComment", res);
+
+          this.commentsPost.update(v => [res.data, ...v])
+
           this.commentControl.reset()
         },
         error: (err) => {
           console.log("error", err);
-          // this.toastrService.error(err.error.error)
-
         }
       })
 
     }
   }
 
-
-
-
-
-  removeDeletedComment(comment: Comment) {
+  removeDeletedComment(comment: Comments) {
     this.commentsPost.update(comments => comments.filter(existing => existing !== comment))
 
   }
@@ -172,19 +166,7 @@ export class SPostComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
   // <!-- i need to make it in single compunent -->
-
-
 
   private readonly postService = inject(PostService)
 
@@ -200,14 +182,13 @@ export class SPostComponent implements OnInit {
 
   newEditPostid = output<string>();
 
-  deletePost = output<Post>();
+  deletePost = output<Doc>();
 
 
 
   showDialog() {
     this.visible.set(true)
   }
-
 
   changeImage(e: Event): void {
 
@@ -216,29 +197,34 @@ export class SPostComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.saveFile.set(input.files[0])
 
-
+      // الواجهة عندك بتعرض صورة واحدة، فاختيار صورة جديدة يستبدل القديمة.
+      const oldImage = this.post().attachments[0];
+      if (oldImage && !this.removeFiles.includes(oldImage)) {
+        this.removeFiles.push(oldImage);
+      }
       // https://www.youtube.com/watch?v=Z5Yf0xJVXYI
       const reader = new FileReader()
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
         this.url.set(event.target.result)
-
       }
 
     }
 
   }
 
-
-
   removeImg() {
+    const oldImage = this.post().attachments[0];
+
+    if (oldImage && !this.removeFiles.includes(oldImage)) {
+      this.removeFiles.push(oldImage);
+    }
+
 
     this.url.set(null)
     this.saveFile.set(null)
 
   }
-
-
 
   submitForm(e: Event): void {
 
@@ -246,13 +232,19 @@ export class SPostComponent implements OnInit {
 
       const formData = new FormData()
 
-      formData.append('body', this.contents.value)
+      formData.append('content', this.contents.value)
 
       let file = this.saveFile()
 
       if (file) {
-        formData.append('image', file, file.name)
+        formData.append('attachments', file, file.name)
       }
+
+
+      this.removeFiles.forEach((name, index) => {
+        formData.append(`removeFiles[${index}]`, name);
+      });
+
 
       this.editUserPost(formData);
 
@@ -260,13 +252,11 @@ export class SPostComponent implements OnInit {
 
   }
 
-
-
   editUserPost(formData: FormData) {
 
     this.postService.editPost(formData, this.post().id).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log("this.postService.editPost", res);
         this.visible.set(false)
         this.newEditPostid.emit(this.post().id);
 

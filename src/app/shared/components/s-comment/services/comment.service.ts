@@ -3,31 +3,28 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
 import { addComment } from '../../../../core/interfaces/comment';
+import { CreateCommentRes } from '../../s-post/interfaces/create-comment-res';
+import { EditCommentRes } from '../interfaces/edit-comment-res';
+import { DeleteCommentRes } from '../interfaces/delete-comment-res';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class CommentService {
 
-  private readonly http=inject(HttpClient)
+  private readonly http = inject(HttpClient)
 
-  createComment(data:addComment):Observable<any>{
-    return this.http.post(environment.baseUrl + `${'comments'}`,data)
-  }
-  
-  getPostComment(idPost:string):Observable<any>{
-    return this.http.get(environment.baseUrl+`posts/${idPost}/comments`)
+  createComment(data: addComment, postId: string): Observable<CreateCommentRes> {
+    return this.http.post<CreateCommentRes>(environment.baseUrl + `/post/${postId}/comment`, data)
   }
 
-  // https://linked-posts.routemisr.com/comments/664d47ffbc90df274cc45b00
-
-  updateComment(idComment:string,data:object):Observable<any>{
-    return this.http.put(environment.baseUrl+`comments/${idComment}`,data)
+  updateComment(idComment: string, postId: string, data: object): Observable<EditCommentRes> {
+    return this.http.put<EditCommentRes>(environment.baseUrl + `/post/${postId}/comment/${idComment}`, data)
   }
 
-    deleteComment(idComment:string):Observable<any>{
-    return this.http.delete(environment.baseUrl+`comments/${idComment}`)
+  deleteComment(idComment: string, postId: string): Observable<DeleteCommentRes> {
+    return this.http.delete<DeleteCommentRes>(environment.baseUrl + `/post/${postId}/comment/${idComment}`)
   }
-
 
 }

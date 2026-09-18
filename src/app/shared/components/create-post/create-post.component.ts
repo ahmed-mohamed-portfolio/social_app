@@ -62,6 +62,8 @@ export class CreatePostComponent implements OnInit {
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
         this.url.set(event.target.result)
+        console.log("this.urlthis.urlthis.url", this.url);
+        console.log("event.target.resultevent.target.result", event.target.result);
       }
 
     }
@@ -83,12 +85,12 @@ export class CreatePostComponent implements OnInit {
 
       const formData = new FormData()
 
-      formData.append('body', this.contents.value)
+      formData.append('content', this.contents.value)
 
       let file = this.saveFile()
 
       if (file) {
-        formData.append('image', file, file.name)
+        formData.append('attachments', file, file.name)
       }
 
 
@@ -104,23 +106,22 @@ export class CreatePostComponent implements OnInit {
 
   addNewPost(formData: FormData) {
 
+    this.postService.createPost(formData).subscribe({
+      next: (res) => {
 
-        this.postService.createPost(formData).subscribe({
-          next: (res) => {
+        console.log(res);
+        this.visible.set(false)
+        this.newPost.emit(true);
 
-            console.log(res);
-            this.visible.set(false)
-            this.newPost.emit(true);
+        this.contents.reset();
+        this.saveFile.set(null);
+        this.url.set(null);
 
-            this.contents.reset();
-            this.saveFile.set(null);
-            this.url.set(null);
-
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        })
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
 
 
   }

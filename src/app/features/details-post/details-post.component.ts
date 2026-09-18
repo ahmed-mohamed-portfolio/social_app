@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../shared/components/s-post/services/post.service';
 import { SPostComponent } from '../../shared/components/s-post/s-post.component';
-import { Post } from '../../core/interfaces/posts';
+import { Doc } from '../../core/interfaces/posts';
 import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 
 @Component({
@@ -17,24 +17,24 @@ export class DetailsPostComponent implements OnInit {
 
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly postService = inject(PostService)
-  post: WritableSignal<Post> = signal({} as Post)
+  post: WritableSignal<Doc> = signal({} as Doc)
 
 
 
-ngOnInit(): void {
+  ngOnInit(): void {
 
     this.activatedRoute.paramMap.subscribe({
-    next: (params) => {
-      const id = params.get('id');
-      if (!id) { return; }
-      this.postService.GetSinglePosts(id).subscribe({
-        next: (res) => {this.post.set(res.post);}
-        ,error:(err)=>{console.log(err);}
-      });
-    },error:(err)=>{console.log(err);}
-  });
+      next: (params) => {
+        const id = params.get('id');
+        if (!id) { return; }
+        this.postService.GetSinglePosts(id).subscribe({
+          next: (res) => { this.post.set(res.data); }
+          , error: (err) => { console.log(err); }
+        });
+      }, error: (err) => { console.log(err); }
+    });
 
-}
+  }
 
 
 }

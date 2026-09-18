@@ -1,4 +1,4 @@
 export interface addComment {
-    "content":string,
-    "post":string
+    "content": string,
+    // "post":string
 }

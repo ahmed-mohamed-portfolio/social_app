@@ -1,13 +1,13 @@
-import { ToastrService } from 'ngx-toastr';
 import { Component, inject, input, InputSignal, output, signal, WritableSignal } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { initFlowbite } from 'flowbite';
-import { Comment } from '../../../core/interfaces/posts';
+import { Comments, Doc } from '../../../core/interfaces/posts';
 import { DatePipe } from '@angular/common';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommentService } from './services/comment.service';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
     selector: 'app-s-comment',
@@ -16,33 +16,34 @@ import { CommentService } from './services/comment.service';
     styleUrl: './s-comment.component.scss',
     standalone: true
 })
+
 export class SCommentComponent {
 
+    private commentService = inject(CommentService)
 
-    comment: InputSignal<Comment> = input.required();
+    comment: InputSignal<Comments> = input.required();
+    post: InputSignal<Doc> = input.required();
 
     itemsC: MenuItem[] | undefined;
 
     commentControl: FormControl = new FormControl('');
 
-    private commentService = inject(CommentService)
-
     toggleCommentEdit: WritableSignal<boolean> = signal(false)
 
     newComment: WritableSignal<string> = signal('')
 
-    deletedComment = output<Comment>()
+    deletedComment = output<Comments>()
 
     localStorageId: WritableSignal<string | null> = signal(null)
 
     showOnDelete: WritableSignal<boolean> = signal(false)
 
-    private toastrService = inject(ToastrService)
+    backendUrlStatic: string = environment.baseUrl + '/uploads/'
 
 
     ngOnInit() {
 
-        console.log(this.comment());
+        console.log("this.comment().createdBy._id", this.comment().createdBy._id);
 
         this.localStorageId.set(localStorage.getItem('id'))
 
@@ -70,12 +71,6 @@ export class SCommentComponent {
         ];
     }
 
-
-
-
-
-
-
     onEdit() {
 
         this.toggleCommentEdit.set(true)
@@ -89,41 +84,36 @@ export class SCommentComponent {
 
     }
 
-
     onDelete() {
-        this.commentService.deleteComment(this.comment()._id).subscribe({
+        this.commentService.deleteComment(this.comment()._id, this.post()._id).subscribe({
             next: (res) => {
-                console.log(res);
+                console.log("delete comment", res);
                 this.deletedComment.emit(this.comment())
             }
         })
     }
 
-
-
     commentSubmit(e: Event) {
 
         e.preventDefault()
 
-        this.commentService.updateComment(this.comment()._id, { "content": this.commentControl.value }).subscribe({
+        this.commentService.updateComment(this.comment()._id, this.post()._id, { "content": this.commentControl.value }).subscribe({
             next: (res) => {
+                console.log("comment edit resssss", res);
 
                 if (res.message == 'success') {
                     this.toggleCommentEdit.set(false)
-                    this.commentControl.setValue(res.comment.content)
+                    this.commentControl.setValue(res.data.content)
                     this.newComment.set(this.commentControl.value)
 
                 }
 
             }, error: (err) => {
                 console.log("err.error.error", err.error.error);
-                // this.toastrService.error(err.error.error)
             }
         })
 
     }
-
-
 
     trueShowOnDelete() {
         this.showOnDelete.set(true)
@@ -132,6 +122,5 @@ export class SCommentComponent {
     falseShowOnDelete() {
         this.showOnDelete.set(false)
     }
-
 
 }

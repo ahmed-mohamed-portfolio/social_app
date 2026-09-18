@@ -4,13 +4,14 @@ import { ProfileDataService } from '../../core/services/profile-data.service';
 import { UserInfo } from '../../core/interfaces/user-info';
 import { DatePipe } from '@angular/common';
 import { PostService } from '../../shared/components/s-post/services/post.service';
-import { Post } from '../../core/interfaces/posts';
+import { Doc } from '../../core/interfaces/posts';
 import { SPostComponent } from "../../shared/components/s-post/s-post.component";
 import { SkeletonCardComponent } from "../../shared/components/skeleton-card/skeleton-card.component";
 import { CreatePostComponent } from "../../shared/components/create-post/create-post.component";
 import { initFlowbite } from 'flowbite';
 import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 import { environment } from '../../../environments/environment.development';
+
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit {
   toastrService = inject(ToastrService)
   postService = inject(PostService)
   iamHere: WritableSignal<boolean> = signal(false)
-  allUserPosts: WritableSignal<Post[]> = signal([])
+  allUserPosts: WritableSignal<Doc[]> = signal([])
   backendUrlStatic: string = environment.baseUrl + '/uploads/'
 
 
@@ -40,7 +41,7 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  // there is problem in backend so i cant get baram page i can get limit only
+
   getProfileInfos() {
     this.profileDataService.getProfileData().subscribe({
       next: (res) => {
@@ -48,17 +49,14 @@ export class ProfileComponent implements OnInit {
 
         this.userData.set(res)
 
-
         this.postService.GetUserPosts(res.data._id).subscribe({
           next: (res) => {
 
             console.log("all user posts", res);
-            this.allUserPosts.set(res.posts)
-            this.allUserPosts.update(userPosts => userPosts.reverse())
+            this.allUserPosts.set(res.data)
 
           }
         })
-
 
       }
     })
@@ -76,6 +74,7 @@ export class ProfileComponent implements OnInit {
       reader.readAsDataURL(input.files[0])
       reader.onload = (event: any) => {
         this.url.set(event.target.result)
+
       }
     }
 
@@ -122,16 +121,16 @@ export class ProfileComponent implements OnInit {
     }
 
     this.postService.GetSinglePosts(postId).subscribe({
-      next: (OnePost) => {
+      next: (res) => {
         this.allUserPosts.update(posts =>
-          posts.map(existing => existing.id === OnePost.post.id ? { ...existing, ...OnePost.post } : existing)
+          posts.map(existing => existing._id === res.data._id ? { ...existing, ...res.data } : existing)
         );
       },
       error: (err) => console.log(err)
     });
   }
 
-  submetDeletePOst(post: Post) {
+  submetDeletePOst(post: Doc) {
 
     this.allUserPosts.update(posts =>
       posts.filter(existing => existing.id !== post.id)
@@ -150,8 +149,7 @@ export class ProfileComponent implements OnInit {
             next: (res) => {
 
               console.log(res);
-              this.allUserPosts.update(posts => [res.posts.at(-1)!, ...posts]);
-
+              this.allUserPosts.set(res.data);
             }
           })
 

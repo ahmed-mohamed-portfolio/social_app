@@ -86,7 +86,9 @@
     </div>
 
     <div class="col-span-12 sm:col-span-8 w-full mt-10">
-      <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
+      @if (this.userData()?.data._id === localStorageId()) {
+        <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
+      }
 
       @for (post of allUserPosts(); track post._id) {
         @defer (on viewport) {

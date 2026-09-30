@@ -25,7 +25,7 @@ export const routes: Routes = [
     {
         path: "", component: MainLayoutComponent, canActivate: [authGuard], children: [
             { path: "timeLine", loadComponent: () => import('../app/features/timeline/timeline.component').then((res) => res.TimelineComponent), title: "timeLine" },
-            { path: "profile", component: ProfileComponent, title: "profile" },
+            { path: "profile/:id", component: ProfileComponent, title: "profile" },
             { path: "details/:id", loadComponent: () => import('../app/features/details-post/details-post.component').then((res) => res.DetailsPostComponent), title: "post details" },
             { path: "changePassword", loadComponent: () => import('../app/features/auth/change-password/change-password.component').then((res) => res.ChangePasswordComponent), title: "changePassword" },
         ]

@@ -60,6 +60,7 @@ export class SPostComponent implements OnInit {
 
     this.localStorageId.set(localStorage.getItem('id'))
     this.commentsPost.set(this.post().comments ?? [])
+    console.log("this.post()", this.post().createdBy._id);
 
     console.log("this.commentsPost", this.commentsPost());
 

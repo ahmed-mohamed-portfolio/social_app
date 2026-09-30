@@ -11,6 +11,7 @@ import { CreatePostComponent } from "../../shared/components/create-post/create-
 import { initFlowbite } from 'flowbite';
 import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 import { environment } from '../../../environments/environment.development';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -32,9 +33,13 @@ export class ProfileComponent implements OnInit {
   iamHere: WritableSignal<boolean> = signal(false)
   allUserPosts: WritableSignal<Doc[]> = signal([])
   backendUrlStatic: string = environment.baseUrl + '/uploads/'
+  private readonly activatedRoute = inject(ActivatedRoute)
+  localStorageId: WritableSignal<string | null> = signal(null)
 
 
   ngOnInit(): void {
+    this.localStorageId.set(localStorage.getItem('id'))
+
     this.iamHere.set(true)
     this.getProfileInfos();
     initFlowbite();
@@ -49,14 +54,32 @@ export class ProfileComponent implements OnInit {
 
         this.userData.set(res)
 
-        this.postService.GetUserPosts(res.data._id).subscribe({
-          next: (res) => {
 
-            console.log("all user posts", res);
-            this.allUserPosts.set(res.data)
 
-          }
-        })
+
+        this.activatedRoute.paramMap.subscribe({
+          next: (params) => {
+            const id = params.get('id');
+            if (!id) { return; }
+
+
+
+            this.postService.GetUserPosts(id).subscribe({
+              next: (res) => {
+
+                console.log("all user posts", res);
+                this.allUserPosts.set(res.data)
+
+              }
+            })
+
+
+          }, error: (err) => { console.log(err); }
+        });
+
+
+
+
 
       }
     })

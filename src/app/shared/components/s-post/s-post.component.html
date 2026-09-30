@@ -14,7 +14,9 @@
         [alt]="post().createdBy?.userName"
       />
       <div class="ps-2 flex flex-col">
-        <p class="text-[15px]">{{ post().createdBy?.userName }}</p>
+        <p class="text-[15px] cursor-pointer" [routerLink]="['/profile', post().createdBy._id]">
+          {{ post().createdBy?.userName }}
+        </p>
         <span class="text-[10px]">{{ post().createdAt | date: 'medium' }}</span>
       </div>
     </div>

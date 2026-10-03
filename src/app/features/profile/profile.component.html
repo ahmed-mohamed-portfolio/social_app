@@ -86,7 +86,7 @@
     </div>
 
     <div class="col-span-12 sm:col-span-8 w-full mt-10">
-      @if (this.userData()?.data._id === localStorageId()) {
+      @if (this.userData()?.data?._id === localStorageId()) {
         <app-create-post (newPost)="submetPOst($event)" [inProfile]="iamHere()"></app-create-post>
       }
 

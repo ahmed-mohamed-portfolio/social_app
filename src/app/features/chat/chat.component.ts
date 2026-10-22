@@ -9,7 +9,7 @@ import { Message, Participant } from './models/chat-messages';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SendMessageService } from './services/send-message.service';
-import { ElementRef, viewChild, afterRenderEffect } from '@angular/core';
+import { ElementRef, viewChild } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 
 
@@ -38,21 +38,7 @@ export class ChatComponent implements OnInit {
 
 
 
-  constructor() {
 
-    afterRenderEffect(() => {
-      this.messages(); // afterRenderEffect work when any signal depend on it change
-
-      const container = this.messagesContainer()?.nativeElement;
-
-      if (container) {
-        container.scrollTo({
-          top: container.scrollHeight,
-          behavior: 'smooth'
-        });
-      }
-    });
-  }
 
 
   ngOnInit(): void {
@@ -103,6 +89,13 @@ export class ChatComponent implements OnInit {
 
 
         this.sectionHiddenOrView.set(true)
+        if (this.sectionHiddenOrView()) {
+
+          setTimeout(() => {
+            this.autoScrollDown()
+          },);
+
+        }
 
       }, error: (err) => {
         console.log("error", err);
@@ -139,6 +132,10 @@ export class ChatComponent implements OnInit {
 
         console.log("messagesmessages", this.messages());
 
+        setTimeout(() => {
+          this.autoScrollDown()
+        },);
+
       }, error: (err) => {
         console.log(err);
 
@@ -161,12 +158,35 @@ export class ChatComponent implements OnInit {
 
         console.log("messagesmessages", this.messages());
 
+        setTimeout(() => {
+          this.autoScrollDown()
+        },);
+
+
       }, error: (err) => {
         console.log(err);
 
       }
     })
 
+  }
+
+
+
+
+  autoScrollDown() {
+
+    const container = this.messagesContainer()?.nativeElement;
+    console.log("container", container);
+
+    if (container) {
+      console.log("testestestets");
+
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }
 
 

@@ -6,16 +6,16 @@
     <div class="flex items-center">
       <img
         [src]="
-          post().createdBy?.profilePic
+          post().createdBy.profilePic
             ? backendUrlStatic + post().createdBy.profilePic
             : '/images/profile.png'
         "
         class="size-9 rounded-full"
-        [alt]="post().createdBy?.userName"
+        [alt]="post().createdBy.userName"
       />
       <div class="ps-2 flex flex-col">
         <p class="text-[15px] cursor-pointer" [routerLink]="['/profile', post().createdBy._id]">
-          {{ post().createdBy?.userName }}
+          {{ post().createdBy.userName }}
         </p>
         <span class="text-[10px]">{{ post().createdAt | date: 'medium' }}</span>
       </div>

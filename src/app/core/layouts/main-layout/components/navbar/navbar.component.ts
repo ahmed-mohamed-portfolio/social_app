@@ -2,8 +2,15 @@ import { LogoutService } from './../../../../services/logout.service';
 import { ProfileDataService } from './../../../../services/profile-data.service';
 import { AfterViewInit, Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { Router, RouterLink } from "@angular/router";
-import { IUser, User } from '../../../../interfaces/user-info';
+import { RouterLink } from "@angular/router";
+import { IUser } from '../../../../interfaces/user-info';
+import { SocketService } from '../../../../socket/socket.service';
+import { environment } from '../../../../../../environments/environment.development';
+import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
+import { JwtUserPayload } from '../../../../interfaces/jwt-user-payload';
+
+
 
 @Component({
   selector: 'app-navbar',
@@ -16,9 +23,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   private readonly profileDataService = inject(ProfileDataService)
   private readonly logoutService = inject(LogoutService)
-  private router = inject(Router)
+  private readonly socketService = inject(SocketService)
   userInfo: WritableSignal<IUser> = signal({} as IUser)
-  backendUrlStatic: string = 'http://localhost:3000/uploads/'
+  backendUrlStatic: string = `${environment.baseUrl}/uploads/`
+
+  private readonly cookieService = inject(CookieService);
+  protected decoded: JwtUserPayload = {} as JwtUserPayload
 
   ngOnInit(): void {
 
@@ -29,13 +39,23 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     setTimeout(() => initFlowbite());
   }
 
+
+
   getProfileInfos() {
-    this.profileDataService.getProfileData().subscribe({
+
+
+    this.decoded = jwtDecode(this.cookieService.get('accessToken'));
+
+
+    this.profileDataService.getProfileData(this.decoded.id).subscribe({
       next: (res) => {
         console.log("======", res, '======');
         this.userInfo.set(res.data)
         localStorage.setItem('id', res.data._id)
         localStorage.setItem('provider', res.data.provider.toString())
+
+
+        this.socketService.connect();
 
       }
     })

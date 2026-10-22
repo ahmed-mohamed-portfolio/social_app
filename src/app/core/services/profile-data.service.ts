@@ -10,8 +10,8 @@ import { UserInfo } from '../interfaces/user-info';
 export class ProfileDataService {
   private readonly http = inject(HttpClient)
 
-  getProfileData(): Observable<UserInfo> {
-    return this.http.get<UserInfo>(environment.baseUrl + '/users/get-user-profile')
+  getProfileData(id: string): Observable<UserInfo> {
+    return this.http.get<UserInfo>(environment.baseUrl + `/users/get-user-profile/${id}`)
   }
 
   uploadProfilePhoto(attachment: FormData): Observable<any> {

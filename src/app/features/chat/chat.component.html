@@ -1,0 +1,348 @@
+<app-navbar></app-navbar>
+
+<div class="h-[calc(100vh-82px)] overflow-hidden text-gray-900 antialiased bg-gray-200 mt-[2px]">
+  <!-- BEGIN: Main Messenger Grid -->
+  <div class="flex h-full w-full overflow-hidden bg-gray-200">
+    <!-- ========================================== -->
+    <!-- BEGIN: Left Column (Chat Sidebar / List)   -->
+    <!-- ========================================== -->
+    @if (!sectionHiddenOrView() || isNotMobile()) {
+      <aside
+        class="md:flex md:w-[300px] lg:w-[360px] flex-shrink-0 flex-col border-r border-[#e5e5e5] h-full bg-white"
+      >
+        <!-- Chats Header -->
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+          <h1 class="text-2xl font-bold tracking-tight text-black">Chats</h1>
+          <div class="flex items-center space-x-2"></div>
+        </div>
+        <!-- Search Input Container -->
+        <div class="px-4 py-1.5">
+          <div class="relative flex items-center bg-[#f0f2f5] rounded-full px-3 py-2">
+            <svg
+              width="20px"
+              height="20px"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <title>ionicons-v5-f</title>
+                <path
+                  d="M221.09,64A157.09,157.09,0,1,0,378.18,221.09,157.1,157.1,0,0,0,221.09,64Z"
+                  style="fill: none; stroke: #000000; stroke-miterlimit: 10; stroke-width: 32px"
+                ></path>
+                <line
+                  x1="338.29"
+                  y1="338.29"
+                  x2="448"
+                  y2="448"
+                  style="
+                    fill: none;
+                    stroke: #000000;
+                    stroke-linecap: round;
+                    stroke-miterlimit: 10;
+                    stroke-width: 32px;
+                  "
+                ></line>
+              </g>
+            </svg>
+
+            <input
+              class="bg-transparent text-sm w-full focus:outline-none border-none p-0 text-gray-800 placeholder-gray-500 ring-0 focus:ring-0"
+              placeholder="Search Messenger"
+              type="text"
+            />
+          </div>
+        </div>
+        <!-- Filter Tabs / Pills -->
+        <div
+          class="flex items-center space-x-1.5 px-4 py-2 text-sm font-semibold overflow-x-auto no-scrollbar"
+        >
+          <button
+            class="px-3 py-1.5 rounded-full bg-[#e7f3ff] text-[#1877f2] font-semibold text-xs leading-none flex-shrink-0"
+          >
+            All
+          </button>
+          <button
+            class="px-3 py-1.5 rounded-full hover:bg-[#f2f2f2] text-gray-700 font-semibold text-xs leading-none flex-shrink-0"
+          >
+            Unread
+          </button>
+        </div>
+
+        <!-- Conversation List -->
+        <div class="flex-1 overflow-y-auto px-2 space-y-0.5 mt-1" data-purpose="chat-thread-list">
+          <!-- ===================================== -->
+
+          @for (user of users(); track $index) {
+            <!-- Active Thread: محمد الدكرورى -->
+            <div
+              class="flex items-center p-2 rounded-xl border border-blue-100 cursor-pointer relative group"
+              (click)="GetOneChat(user.id)"
+            >
+              <!-- Profile Avatar -->
+              <div class="relative flex-shrink-0 mr-3">
+                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+                  <img
+                    class="w-full h-full text-gray-400 bg-amber-100 object-cover"
+                    [src]="backendUrlStatic + user.profilePic"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <!-- Contact & Message Preview -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-0.5">
+                  <h2 class="text-sm font-semibold text-gray-900 truncate">{{ user.userName }}</h2>
+                </div>
+                <div
+                  class="flex items-center justify-between text-xs text-gray-600 truncate space-x-1"
+                  dir="rtl"
+                >
+                  <span class="truncate">You: ...ول اسطب الميكروتيك 5.21على كيسه</span>
+                  <span class="text-gray-400">·</span>
+                  <span class="flex-shrink-0">38w</span>
+                </div>
+              </div>
+              <!-- Tiny Read Status Thumbnail / Indicator -->
+              <div class="ml-2 flex-shrink-0">
+                <div
+                  class="w-3.5 h-3.5 rounded-full overflow-hidden border border-white bg-amber-700"
+                ></div>
+              </div>
+            </div>
+
+            <!-- ===================================== -->
+          }
+        </div>
+      </aside>
+    }
+    <!-- END: Left Column (Chat Sidebar) -->
+    <!-- ========================================== -->
+    <!-- BEGIN: Middle Column (Active Chat Window)  -->
+    <!-- ========================================== -->
+
+    @if (sectionHiddenOrView()) {
+      <main
+        class="overflow-hidden m-2 rounded-md border-t flex-1 min-w-0 flex flex-col h-full bg-white relative border-r border-[#e5e5e5]"
+      >
+        <!-- Active Chat Top Navigation Header -->
+        @if (participants().length) {
+          <header
+            class="h-16 px-3 sm:px-4 border-b border-[#e5e5e5] flex items-center justify-between flex-shrink-0 bg-white shadow-sm z-10"
+          >
+            <div class="flex items-center min-w-0">
+              <!-- Mobile Back / Chats Button (Visible on mobile screens) -->
+              <button
+                (click)="sectionHiddenOrViewInverse()"
+                aria-label="Back to chats"
+                class="cursor-pointer md:hidden mr-2 p-1.5 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+                type="button"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewbox="0 0 24 24"
+                >
+                  <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </button>
+              <!-- Avatar with online indicator -->
+              <div class="relative cursor-pointer mr-2.5 sm:mr-3 flex-shrink-0">
+                <div
+                  class="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-amber-100 flex items-center justify-center"
+                >
+                  <img
+                    class="w-full h-full object-cover"
+                    [src]="backendUrlStatic + participants()[1].profilePic"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-sm sm:text-base font-semibold leading-tight text-gray-900 truncate">
+                  {{ participants()[1].userName }}
+                </h2>
+                <p class="text-[11px] sm:text-xs text-gray-500 leading-tight">Active 14m ago</p>
+              </div>
+            </div>
+          </header>
+        }
+
+        <!-- Message History Container -->
+
+        <div
+          #messagesContainer
+          class="flex-1 overflow-y-auto px-3 sm:px-4 py-4 flex flex-col space-y-3"
+          data-purpose="chat-messages-scroll-area"
+        >
+          @if (messages()) {
+            @for (message of messages(); track message._id; let isLast = $last; let i = $index) {
+              @if (participants()[1]._id == message.createdBy) {
+                <!-- Timestamp Divider 1 -->
+                @if (i === 0 || messages()[i - 1].createdBy !== message.createdBy) {
+                  <div class="flex justify-center my-1">
+                    <span class="text-xs text-gray-500 font-normal">{{
+                      message.createdAt | date: 'dd/MM/yyyy hh:mm a'
+                    }}</span>
+                  </div>
+                }
+                <!-- Received Message 1 -->
+                <div class="flex items-end space-x-2">
+                  <!-- Avatar -->
+                  <div
+                    class="w-7 h-7 rounded-full overflow-hidden bg-amber-100 flex-shrink-0 mb-0.5"
+                  >
+                    <svg
+                      class="w-full h-full text-amber-800"
+                      fill="currentColor"
+                      viewbox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <!-- Bubble -->
+                  <div
+                    class="bg-[#f0f2f5] text-gray-900 text-sm font-normal py-2 px-3.5 rounded-2xl rounded-bl-md max-w-[85%] sm:max-w-md break-words"
+                  >
+                    <p class="arabic-text">{{ message.content }}</p>
+                  </div>
+                </div>
+              }
+
+              @if (participants()[0]._id == message.createdBy) {
+                <!-- Timestamp Divider 1 -->
+                @if (i === 0 || messages()[i - 1].createdBy !== message.createdBy) {
+                  <div class="flex justify-center my-1">
+                    <span class="text-xs text-gray-500 font-normal">{{
+                      message.createdAt | date: 'dd/MM/yyyy hh:mm a'
+                    }}</span>
+                  </div>
+                }
+                <!-- Main Long Sent Message -->
+                <div class="flex flex-col items-end space-y-0">
+                  <div
+                    class="bg-[#2463eb] text-white text-sm font-normal py-3 px-4 rounded-2xl rounded-br-md max-w-[90%] sm:max-w-[510px] leading-relaxed shadow-sm break-words"
+                  >
+                    <div class="arabic-text space-y-2 text-right font-sans">
+                      <p>
+                        {{ message.content }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Read Receipt Mini Indicator start-->
+                  <!-- <div
+                  class="w-3.5 h-3.5 rounded-full overflow-hidden bg-amber-800 border border-white mr-0.5"
+                >
+                  <img [src]="backendUrlStatic + participants()[1].profilePic" />
+                </div> -->
+                  <!-- Read Receipt Mini Indicator end-->
+                </div>
+              }
+            }
+          }
+        </div>
+
+        <!-- Chat Bottom Input Bar -->
+        <footer class="p-2 sm:p-3 bg-white flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <!-- Text Input Field Container -->
+          <div
+            class="flex-1 min-w-0 relative flex items-center bg-[#f0f2f5] rounded-full px-3 sm:px-4 my-2"
+          >
+            <input
+              #messageInput
+              (keydown.enter)="sendMessages(messageInput.value, participants()[1].id, messageInput)"
+              class="w-full min-w-0 bg-transparent border-0 p-0 text-sm focus:ring-0 focus:outline-none placeholder-gray-500 text-gray-900"
+              placeholder="Aa"
+              type="text"
+            />
+
+            <button
+              (click)="sendMessages(messageInput.value, participants()[1].id, messageInput)"
+              type="submit"
+              class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
+            >
+              <svg
+                class="w-5 h-5 rotate-90 rtl:-rotate-90"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 18 20"
+              >
+                <path
+                  d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"
+                />
+              </svg>
+              <span class="sr-only">Send message</span>
+            </button>
+          </div>
+        </footer>
+      </main>
+      <!-- END: Middle Column (Active Chat Window) -->
+      <!-- ========================================== -->
+      <!-- BEGIN: Right Column (Chat Details/Profile) -->
+      <!-- ========================================== -->
+      <aside
+        class="overflow-hidden m-2 rounded-md hidden xl:flex w-[320px] flex-shrink-0 flex-col h-full bg-white overflow-y-auto"
+        data-purpose="chat-details-sidebar"
+      >
+        <!-- Top Profile Overview -->
+        <div class="flex flex-col items-center pt-8 pb-4 px-4 text-center">
+          <!-- Large Profile Picture -->
+          <div
+            class="w-20 h-20 rounded-full overflow-hidden bg-amber-100 mb-3 shadow-sm border border-gray-100 flex items-center justify-center"
+          >
+            <img
+              class="w-full h-full object-cover"
+              [src]="backendUrlStatic + participants()[1].profilePic"
+              alt=""
+            />
+          </div>
+          <h3 class="text-base font-bold text-gray-900 leading-tight">
+            {{ participants()[1].userName }}
+          </h3>
+          <p class="text-xs text-gray-500 mt-0.5">Active 14m ago</p>
+          <!-- Quick Action Round Buttons -->
+          <div class="flex items-center space-x-6 mt-4">
+            <!-- Profile Button -->
+            <div
+              [routerLink]="['/profile', participants()[1].id]"
+              class="flex flex-col items-center space-y-1"
+            >
+              <button
+                aria-label="View Profile"
+                class="cursor-pointer w-9 h-9 rounded-full bg-[#f0f2f5] hover:bg-[#e4e6eb] flex items-center justify-center transition-colors"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M20 21a8 8 0 0 0-16 0" />
+                </svg>
+              </button>
+              <span class="text-xs text-gray-600 font-medium">Profile</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    }
+    <!-- END: Right Column (Chat Details) -->
+  </div>
+  <!-- END: Main Messenger Grid -->
+</div>

@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SocketService } from '../socket/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class LogoutService {
   private http = inject(HttpClient)
   private readonly router: Router = inject(Router)
   private readonly toastrService: ToastrService = inject(ToastrService)
-
+  private socketService = inject(SocketService)
 
 
   signOut(flag: string) {
@@ -24,6 +25,8 @@ export class LogoutService {
           next: (res) => {
             this.router.navigate(['/login'])
             this.toastrService.info("You have successfully logged out.", "Logout Successful")
+
+            this.socketService.disconnect();
           },
           error: (err) => {
             console.log(err);
@@ -39,6 +42,8 @@ export class LogoutService {
             this.router.navigate(['/login'])
             this.toastrService.info("You have successfully logged out.", "Logout Successful")
 
+            this.socketService.disconnect();
+
           },
           error: (err) => {
             console.log(err);
@@ -51,6 +56,9 @@ export class LogoutService {
 
         this.router.navigate(['/login'])
         this.toastrService.info("You have successfully logged out.", "Logout Successful")
+
+        this.socketService.disconnect();
+
         break;
 
       default:

@@ -48,41 +48,45 @@ export class ProfileComponent implements OnInit {
 
 
   getProfileInfos() {
-    this.profileDataService.getProfileData().subscribe({
-      next: (res) => {
-        console.log("profile res", res);
-
-        this.userData.set(res)
 
 
+    //get id from param
+    this.activatedRoute.paramMap.subscribe({
+      next: (params) => {
+        const id = params.get('id');
+        if (!id) { return; }
 
 
-        this.activatedRoute.paramMap.subscribe({
-          next: (params) => {
-            const id = params.get('id');
-            if (!id) { return; }
+        //get user profile data using id param
+        this.profileDataService.getProfileData(id).subscribe({
+          next: (res) => {
+            console.log("profile res", res);
+
+            this.userData.set(res)
+
+          }
+        })
+
+
+        //get user posts data using id param
+
+        this.postService.GetUserPosts(id).subscribe({
+          next: (res) => {
+
+            console.log("all user posts", res);
+            this.allUserPosts.set(res.data)
+
+          }
+        })
+
+
+      }, error: (err) => { console.log(err); }
+    });
 
 
 
-            this.postService.GetUserPosts(id).subscribe({
-              next: (res) => {
-
-                console.log("all user posts", res);
-                this.allUserPosts.set(res.data)
-
-              }
-            })
 
 
-          }, error: (err) => { console.log(err); }
-        });
-
-
-
-
-
-      }
-    })
   }
 
   changeImageProfile(e: Event) {
@@ -164,11 +168,12 @@ export class ProfileComponent implements OnInit {
   submetPOst(e: boolean) {
     if (e) {
 
-      this.profileDataService.getProfileData().subscribe({
-        next: (res) => {
+      this.activatedRoute.paramMap.subscribe({
+        next: (params) => {
+          const id = params.get('id');
+          if (!id) { return; }
 
-
-          this.postService.GetUserPosts(res.data._id).subscribe({
+          this.postService.GetUserPosts(id).subscribe({
             next: (res) => {
 
               console.log(res);

@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../../environments/environment.development';
 import { FcmService } from '../../../core/services/fcm.service';
 
+
 declare const google: any;
 
 @Component({
@@ -119,7 +120,6 @@ export class LoginComponent implements OnInit {
 
               this.toastrService.info("logged in successfully")
               this.route.navigate(["/timeLine"])
-
 
             }
           } else {

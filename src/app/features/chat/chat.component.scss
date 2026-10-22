@@ -1,0 +1,38 @@
+@theme {
+  --color-messenger-blue: #0084ff;
+  --color-messenger-purple: #9333ea;
+  --color-messenger-bubble: #2d65f3;
+  --color-messenger-darkBubble: #1b64f2;
+  --color-messenger-lightGray: #f0f2f5;
+  --color-messenger-hoverGray: #f2f2f2;
+  --color-messenger-pillActive: #e7f3ff;
+  --color-messenger-pillActiveText: #1877f2;
+  --color-messenger-textMuted: #65676b;
+  --color-messenger-border: #e4e6eb;
+
+  --font-sans: 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bcc0c4;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8d949e;
+}
+
+.arabic-text {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl;
+  unicode-bidi: embed;
+}

@@ -37,9 +37,6 @@ export class TimelineComponent implements OnInit {
 
   }
 
-
-
-
   getAllPosts() {
 
     this.loader.set(true);
@@ -60,8 +57,6 @@ export class TimelineComponent implements OnInit {
 
   }
 
-
-
   onScrollDown() {
 
     if (this.allPagesCount() === this.pageNumber() || this.pageNumber() < 1) return;
@@ -70,9 +65,6 @@ export class TimelineComponent implements OnInit {
     this.getAllPosts();
 
   }
-
-
-
 
   submetPOst(e: boolean) {
 

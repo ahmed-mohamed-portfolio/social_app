@@ -1,3 +1,4 @@
+import { SendMessageService } from './../chat/services/send-message.service';
 import { ToastrService } from 'ngx-toastr';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { ProfileDataService } from '../../core/services/profile-data.service';
@@ -11,7 +12,8 @@ import { CreatePostComponent } from "../../shared/components/create-post/create-
 import { initFlowbite } from 'flowbite';
 import { NavbarComponent } from "../../core/layouts/main-layout/components/navbar/navbar.component";
 import { environment } from '../../../environments/environment.development';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -35,6 +37,8 @@ export class ProfileComponent implements OnInit {
   backendUrlStatic: string = environment.baseUrl + '/uploads/'
   private readonly activatedRoute = inject(ActivatedRoute)
   localStorageId: WritableSignal<string | null> = signal(null)
+  sendMessageService = inject(SendMessageService)
+  private route: Router = inject(Router);
 
 
   ngOnInit(): void {
@@ -194,6 +198,23 @@ export class ProfileComponent implements OnInit {
   ngOnDestroy(): void {
 
     this.iamHere.set(false)
+
+  }
+
+
+
+  sendHi(sendTo: string | undefined) {
+
+    if (!sendTo) return;
+
+    this.sendMessageService.successMessage()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.route.navigate(['/chat', sendTo]);
+      });
+
+    //emit
+    this.sendMessageService.sendMessage({ content: "Hi", sendTo })
 
   }
 

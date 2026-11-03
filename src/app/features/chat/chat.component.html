@@ -50,9 +50,11 @@
             </svg>
 
             <input
+              #searchInput
               class="bg-transparent text-sm w-full focus:outline-none border-none p-0 text-gray-800 placeholder-gray-500 ring-0 focus:ring-0"
               placeholder="Search Messenger"
               type="text"
+              (input)="searchUsers(searchInput.value)"
             />
           </div>
         </div>
@@ -76,11 +78,11 @@
         <div class="flex-1 overflow-y-auto px-2 space-y-0.5 mt-1" data-purpose="chat-thread-list">
           <!-- ===================================== -->
 
-          @for (user of users(); track $index) {
+          @for (user of searchedUsers(); track $index) {
             <!-- Active Thread: محمد الدكرورى -->
             <div
               class="flex items-center p-2 rounded-xl border border-blue-100 cursor-pointer relative group"
-              (click)="openChat(user.id)"
+              [routerLink]="['/chat', user.id]"
             >
               <!-- Profile Avatar -->
               <div class="relative flex-shrink-0 mr-3">

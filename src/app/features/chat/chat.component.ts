@@ -7,7 +7,7 @@ import { NavbarComponent } from '../../core/layouts/main-layout/components/navba
 import { GetOneChatService } from './services/get-one-chat.service';
 import { Message, Participant } from './models/chat-messages';
 import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SendMessageService } from './services/send-message.service';
 import { ElementRef, viewChild } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
@@ -30,6 +30,8 @@ export class ChatComponent implements OnInit {
   private readonly getUsersInChatService = inject(GetUsersInChatService)
   private readonly destroyRef = inject(DestroyRef);
   readonly users = signal<IChatUser[]>([]);
+  protected searchedUsers = signal<IChatUser[]>([]);
+
   backendUrlStatic: string = `${environment.baseUrl}/uploads/`
   private getOneChatService = inject(GetOneChatService)
 
@@ -55,9 +57,11 @@ export class ChatComponent implements OnInit {
   userStatuses = signal<Record<string, boolean>>({});
   private readonly socketService = inject(SocketService);
 
+  private route = inject(ActivatedRoute);
 
 
   ngOnInit(): void {
+
 
     initFlowbite();
 
@@ -66,6 +70,19 @@ export class ChatComponent implements OnInit {
     this.listenToNewMessage()
 
     this.listenToUserStatuses();
+
+
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+
+      if (id) {
+
+        this.openChat(id)
+
+      } else {
+        console.log('No Chat ID');
+      }
+    });
 
     //i have problem : when i refresh the page the connection in backend dont complete 
     // and the  this.usersInChat() dont work , so i search about way to , dont open the compunent till comblete the connection socket with backend
@@ -127,6 +144,9 @@ export class ChatComponent implements OnInit {
         this.users.set(users);
 
         console.log('Users in chat:', users);
+
+
+        this.searchedUsers.set(this.users())
 
         // Check the current status of each user 
         // online or offline features
@@ -217,8 +237,13 @@ export class ChatComponent implements OnInit {
 
 
         }, error: (err) => {
-          console.log("error", err);
+          console.log("error======>", err.error.message);
+          if (err.error.message === "Fail to find Matching Conversation") {
+            console.log("i m a here err.error.message");
+            this.sectionHiddenOrView.set(true)
 
+
+          }
           if (this.pageNumber() > 1) {
             this.pageNumber.update(v => v - 1);
           }
@@ -319,6 +344,21 @@ export class ChatComponent implements OnInit {
     this.pageNumber.update(v => v + 1);
     this.GetOneChat(this.participants()[1]._id);
 
+  }
+
+
+  searchUsers(value: string) {
+
+    console.log(value);
+
+
+    this.searchedUsers.set(
+      value
+        ? this.users().filter(user =>
+          user.userName.toLowerCase().startsWith(value)
+        )
+        : this.users()
+    );
   }
 
 }

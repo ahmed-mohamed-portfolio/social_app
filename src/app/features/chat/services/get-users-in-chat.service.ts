@@ -25,6 +25,7 @@ export class GetUsersInChatService {
 
 
   requestUsersInChat(): void {
+
     this.socketService.emit(
       SocketEvents.GET_USERS_IN_CHAT
     );

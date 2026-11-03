@@ -24,6 +24,9 @@ export interface Chat {
     updatedAt: string
     __v: number
     id: string
+    pages: number
+    totalMessages: number
+
 }
 
 export interface Participant {

@@ -1,16 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
+@import 'tailwindcss';
 
-
-
-@import "flowbite/src/themes/default";
+@import 'flowbite/src/themes/default';
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 
-
-body{
-    background-color: #eee;
+body {
+  background-color: #eee;
 }
 
+//===============stop dark mode===================
+@custom-variant dark (&:where(.dark, .dark *));
 
-@import "primeicons/primeicons.css";
+:root {
+  color-scheme: light;
+}
+//===============================================
+
+@import 'primeicons/primeicons.css';

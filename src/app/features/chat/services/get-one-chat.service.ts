@@ -11,8 +11,8 @@ export class GetOneChatService {
 
   private http = inject(HttpClient)
 
-  getOneChat(id: string): Observable<ChatMessages> {
-    return this.http.get<ChatMessages>(environment.baseUrl + `/chat/${id}?page=1&size=10`)
+  getOneChat(id: string, page: number, size: number): Observable<ChatMessages> {
+    return this.http.get<ChatMessages>(environment.baseUrl + `/chat/${id}?page=${page}&size=${size}`)
   }
 
 }

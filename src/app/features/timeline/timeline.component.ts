@@ -41,7 +41,6 @@ export class TimelineComponent implements OnInit {
 
 
   getAllPosts() {
-    console.log("i am try getAllPosts", this.pageNumber());
 
     this.loader.set(true);
     this.postService.GetAllPosts(this.pageNumber()).subscribe({
@@ -64,7 +63,6 @@ export class TimelineComponent implements OnInit {
 
 
   onScrollDown() {
-    console.log("i am here in on scrolldown", this.pageNumber());
 
     if (this.allPagesCount() === this.pageNumber() || this.pageNumber() < 1) return;
 

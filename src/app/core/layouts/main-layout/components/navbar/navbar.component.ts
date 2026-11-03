@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   protected decoded: JwtUserPayload = {} as JwtUserPayload
 
   ngOnInit(): void {
+    this.socketService.connect();
 
     this.getProfileInfos()
   }
@@ -55,7 +56,6 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         localStorage.setItem('provider', res.data.provider.toString())
 
 
-        this.socketService.connect();
 
       }
     })

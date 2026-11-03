@@ -56,10 +56,18 @@ export class SocketService {
 
         if (!this.socket.connected) {
             this.socket.connect();
+
+            console.log("connected");
+
         }
     }
 
+
     emit<T>(event: string, data?: T): void {
+        console.log("Emitting:", event);
+        console.log("Connected:", this.socket.connected);
+        console.log("Socket ID:", this.socket.id);
+
         this.socket.emit(event, data);
     }
 
@@ -86,4 +94,5 @@ export class SocketService {
     disconnect(): void {
         this.socket.disconnect();
     }
+
 }

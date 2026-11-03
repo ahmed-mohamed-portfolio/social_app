@@ -23,7 +23,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura
+        preset: Aura,
+        //========stop dark mode ============
+        options: {
+          darkModeSelector: false
+        }
+        //===================================
+
       }
     }),
     provideHttpClient(withFetch(), withInterceptors([headerInterceptor, loaderInterceptor, errorInterceptor])),

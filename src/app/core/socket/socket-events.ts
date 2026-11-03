@@ -13,5 +13,11 @@ export const SocketEvents = {
     NEW_MESSAGE: 'newMessage',
     SUCCESS_MESSAGE: 'successMessage',
 
+
+    CHECK_STATUS: 'checkStatus',
+    ONLINE_OR_OFFLINE: 'onlineOrOffline',
+    ONLINE_USER: 'online_user',
+    OFFLINE_USER: 'offline_user',
+
     CUSTOM_ERROR: 'custom_error'
 } as const;

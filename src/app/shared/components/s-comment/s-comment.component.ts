@@ -8,10 +8,11 @@ import { DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommentService } from './services/comment.service';
 import { environment } from '../../../../environments/environment.development';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-s-comment',
-    imports: [Menu, ButtonModule, DatePipe, ReactiveFormsModule],
+    imports: [Menu, ButtonModule, DatePipe, ReactiveFormsModule, RouterLink],
     templateUrl: './s-comment.component.html',
     styleUrl: './s-comment.component.scss',
     standalone: true

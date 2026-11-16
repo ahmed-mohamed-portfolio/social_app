@@ -89,7 +89,9 @@
                 <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
                   <img
                     class="w-full h-full text-gray-400 bg-amber-100 object-cover"
-                    [src]="backendUrlStatic + user.profilePic"
+                    [src]="
+                      user.profilePic ? backendUrlStatic + user.profilePic : '/images/profile.png'
+                    "
                     alt=""
                   />
                 </div>
@@ -103,9 +105,9 @@
                   class="flex items-center justify-between text-xs text-gray-600 truncate space-x-1"
                   dir="rtl"
                 >
-                  <span class="truncate">You: ...ول اسطب الميكروتيك 5.21على كيسه</span>
+                  <!-- <span class="truncate">You: ...ول اسطب الميكروتيك 5.21على كيسه</span>
                   <span class="text-gray-400">·</span>
-                  <span class="flex-shrink-0">38w</span>
+                  <span class="flex-shrink-0">38w</span> -->
                 </div>
               </div>
               <!-- Tiny Read Status Thumbnail / Indicator -->
@@ -170,7 +172,11 @@
                 >
                   <img
                     class="w-full h-full object-cover"
-                    [src]="backendUrlStatic + participants()[1].profilePic"
+                    [src]="
+                      participants()[1].profilePic
+                        ? backendUrlStatic + participants()[1].profilePic
+                        : '/images/profile.png'
+                    "
                     alt=""
                   />
                 </div>
@@ -223,7 +229,11 @@
                   >
                     <img
                       class="object-cover h-full"
-                      [src]="backendUrlStatic + participants()[1].profilePic"
+                      [src]="
+                        participants()[1].profilePic
+                          ? backendUrlStatic + participants()[1].profilePic
+                          : '/images/profile.png'
+                      "
                       alt=""
                     />
                   </div>
@@ -321,7 +331,11 @@
           >
             <img
               class="w-full h-full object-cover"
-              [src]="backendUrlStatic + participants()[1].profilePic"
+              [src]="
+                participants()[1].profilePic
+                  ? backendUrlStatic + participants()[1].profilePic
+                  : '/images/profile.png'
+              "
               alt=""
             />
           </div>

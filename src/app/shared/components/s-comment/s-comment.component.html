@@ -10,7 +10,12 @@
         class="size-9 rounded-full"
         [alt]="comment().createdBy.userName"
       />
-      <p class="text-[15px] px-3">{{ comment().createdBy.userName }}</p>
+      <p
+        [routerLink]="['/profile', comment().createdBy._id]"
+        class="cursor-pointer text-[15px] px-3"
+      >
+        {{ comment().createdBy.userName }}
+      </p>
       <span class="text-[10px]">{{ comment().createdAt | date: 'short' }}</span>
     </div>
 
